@@ -1,0 +1,180 @@
+{
+  "@@locale": "ja",
+  "appTitle": "100万歩の旅",
+  "onboardingTitle1": "100万歩の旅へようこそ",
+  "onboardingDesc1": "1歩を1日として「100万日前」から現在までの人類の旅に出かけましょう!",
+  "onboardingTitle2": "アーティファクトを集めよう",
+  "onboardingDesc2": "世紀を巡る旅の中で、世界中の「物語」にまつわる アーティファクトを集めましょう。",
+  "onboardingTitle3": "あなたの冒険をスタート",
+  "onboardingDesc3": "さあ、シューズを履いて古くて新しい旅の始まりです！ログインまたはユーザー登録して始めます。",
+  "btnNext": "次へ",
+  "btnStartAuth": "ログイン / アカウント作成",
+  "changeLanguage": "言語変更 / Change Language",
+  "tabHome": "ホーム",
+  "tabHistory": "歴史",
+  "historyReached": "{name} に到達しました。",
+  "@historyReached": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "artifactDiscovered": "{name} を発見しました。",
+  "@artifactDiscovered": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "figureMet": "{name} と出会いました。",
+  "@figureMet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "hintHomeTitle": "ホーム画面の旅の進め方",
+  "hintHomeDesc": "あなたが歩いた歩数（1歩＝約1日）に応じて歴史の時間が進みます。\n\n・上部の日付ボタンをタップすると、現在滞在している時代の歴史的背景を読むことができます。\n・時代が進むと背景画像が自動的に変化します。\n・右下の★ボタンからは偉人やアーティファクトを獲得できます。",
+  "hintHistoryTitle": "History図鑑の見方",
+  "hintHistoryDesc": "これまで歩みを進めて解放された年代やアーティファクトのコレクションです。\n\n・世紀ごとに折りたたまれて記録されています。\n・タップして展開すると、到達・獲得した日付や詳細メッセージを確認できます。",
+  "tabSteps": "歩数",
+  "homeDefaultDescription": "紀元前750年頃、地中海地域ではフェニキア人による海上貿易が活発化し、イタリア半島では古代ローマの萌芽となるエトルリア文化が発展し始めた。ギリシャでは都市国家ポリスの形成が進む黎明期であった。",
+  "historyEmptyCurrentRound": "この周回で獲得した歴史はまだありません",
+  "historyCenturyBce": "紀元前{century}世紀",
+  "@historyCenturyBce": {
+    "placeholders": {
+      "century": {"type": "int"}
+    }
+  },
+  "historyCenturyCe": "{century}世紀",
+  "@historyCenturyCe": {
+    "placeholders": {
+      "century": {"type": "int"}
+    }
+  },
+  "eraReachedMessage": "{eraLabel}に到達しました",
+  "@eraReachedMessage": {
+    "description": "年代到達時の表示メッセージ",
+    "placeholders": {
+      "eraLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "artifactDiscoveredMessage": "{artifactName}を発見しました。",
+  "@artifactDiscoveredMessage": {
+    "description": "アーティファクト発見時の表示メッセージ",
+    "placeholders": {
+      "artifactName": {
+        "type": "String"
+      }
+    }
+  },
+  "stepsToday": "今日の歩数 : {steps}歩",
+  "@stepsToday": {
+    "placeholders": {
+      "steps": {"type": "int"}
+    }
+  },
+  "stepsUpdatedAt": "アップデート: {dateTime}",
+  "@stepsUpdatedAt": {
+    "placeholders": {
+      "dateTime": {"type": "String"}
+    }
+  },
+  "stepsTotal": "総歩数: {steps}歩",
+  "@stepsTotal": {
+    "placeholders": {
+      "steps": {"type": "int"}
+    }
+  },
+  "stepsStartDate": "アプリ開始日: {date}",
+  "@stepsStartDate": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "stepsPast7Days": "過去 7 日間の歩数",
+  "stepsChartTooltip": "{steps} 歩",
+  "@stepsChartTooltip": {
+    "placeholders": {
+      "steps": {"type": "int"}
+    }
+  },
+  "hintStepsTitle": "歩数データの見方",
+  "hintStepsDesc": "本日の歩数やこれまでの累計歩数、および過去7日間の歩数推移を確認できます。\n\n・グラフの棒をタップすると詳細な歩数が表示されます。",
+  "historyReachedEra": "{eraLabel}年代に到達しました",
+
+  "dateBceFormat": "紀元前{year}年{month}月{day}日",
+  "@dateBceFormat": {
+    "placeholders": {
+      "year": {"type": "int"},
+      "month": {"type": "int"},
+      "day": {"type": "int"}
+    }
+  },
+  "dateCeFormat": "西暦{year}年{month}月{day}日",
+  "@dateCeFormat": {
+    "placeholders": {
+      "year": {"type": "int"},
+      "month": {"type": "int"},
+      "day": {"type": "int"}
+    }
+  },
+
+  "menuChangeNicknameTitle": "ニックネームの変更",
+  "menuChangeNicknameHint": "新しいニックネームを入力",
+  "menuCancel": "キャンセル",
+  "menuSave": "保存",
+  "menuNicknameUpdated": "ニックネームを更新しました",
+  "menuNicknameUpdateFailed": "更新に失敗しました: {error}",
+  "@menuNicknameUpdateFailed": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "menuStartPoint": "開始地点: {era}{year}年",
+  "@menuStartPoint": {
+    "placeholders": {
+      "era": {"type": "String"},
+      "year": {"type": "int"}
+    }
+  },
+  "menuNotLoggedIn": "未ログイン",
+  "menuTodaySteps": "本日の歩数",
+  "menuTotalSteps": "累計歩数",
+  "menuAllConquered": "全歴史制覇！ (総歩数)",
+  "menuThemeSection": "テーマ",
+  "menuDarkMode": "ダークモード",
+  "menuLanguageSection": "言語",
+  "menuLogOut": "ログアウト",
+  "artifactDialogTitle": "アーティファクトの発見",
+  "artifactDialogDesc": "短い動画を見て現在の年代（{eraLabel}）のアーティファクト（技術・偉人・歴史的出来事）を獲得しますか？",
+  "@artifactDialogDesc": {
+    "placeholders": {
+      "eraLabel": {"type": "String"}
+    }
+  },
+  "artifactDialogNotice": "※ この時代の未獲得アーティファクトから均等な確率で選ばれます。",
+  "artifactDialogCancel": "キャンセル",
+  "artifactDialogWatchAd": "獲得",
+
+  "welcomeTitle": "100万歩の歴史旅へようこそ！",
+  "welcomeHydrationNotice": "人類の長い歴史の旅には、常にこまめな水分補給が不可欠でした。\n屋外でウォーキングを楽しむ際は、しっかりと水分を補給し、安全に気をつけて旅をお楽しみください。",
+  "welcomeBackgroundTitle": "自動バックグラウンド連携",
+  "welcomeBackgroundNotice": "本アプリはヘルスケア機能と自動連携するため、常にアプリを開いておく必要はありません。\n普段通り生活し、時々アプリを開くことで次の時代への到達や新しい歴史の発見が楽しめます！",
+  "welcomeButtonStart": "旅を始める",
+
+  "logoutDialogTitle": "ログアウトの確認",
+  "logoutDialogMessage": "本当にログアウトしますか？\n\n※ ログアウト期間中は歩数がカウント・加算されませんのでご注意ください。",
+  "logoutConfirmButton": "ログアウト",
+  "logoutCancelButton": "キャンセル",
+
+  "notification6kTitle": "👟 6,000歩達成！",
+  "notification6kBody": "本日の目標6,000歩を達成しました！歴史の旅が着実に進んでいます。",
+  "notification10kTitle": "🎉 10,000歩大達成！",
+  "notification10kBody": "素晴らしい！10,000歩に到達しました！1万日分の歴史を駆け抜けました！",
+
+  "milestone6kTitle": "👟 6,000歩達成！",
+  "milestone6kDesc": "本日6,000歩に到達しました！\nアーティファクトを獲得できます！",
+  "milestone10kTitle": "🎉 10,000歩達成！",
+  "milestone10kDesc": "素晴らしい！本日10,000歩に到達しました！\nアーティファクトを獲得できます！",
+  "milestoneGetArtifact": "獲得する"
+}

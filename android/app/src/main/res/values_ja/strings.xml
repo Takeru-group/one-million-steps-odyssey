@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- アプリ表示名 -->
+    <string name="app_name">百万歩の旅</string>
+
+    <!-- 通知チャンネル名 -->
+    <string name="notification_channel_name">歩数・進捗通知</string>
+    <string name="notification_channel_description">日々の歩数達成や歴史到達の通知をお届けします。</string>
+
+    <!-- バックグラウンド処理サービス表示名 -->
+    <string name="background_service_name">オデッセイの進捗を記録中</string>
+</resources>

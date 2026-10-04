@@ -1,0 +1,4 @@
+"NSUserTrackingUsageDescription" = "This identifier will be used to deliver personalized ads to you.";
+"NSHealthShareUsageDescription" = "We use your step count data to advance your progress through historical eras in the journey.";
+"NSHealthUpdateUsageDescription" = "We use this to sync your step count with HealthKit.";
+"CFBundleDisplayName" = "1MSO";

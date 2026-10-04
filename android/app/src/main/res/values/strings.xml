@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- アプリ表示名 -->
+    <string name="app_name">1MSO</string>
+
+    <!-- 通知チャンネル名（バックグラウンド/歩数通知用） -->
+    <string name="notification_channel_name">Step Notifications</string>
+    <string name="notification_channel_description">Notifications for daily step progress and historical milestones.</string>
+
+    <!-- バックグラウンド処理サービス表示名 -->
+    <string name="background_service_name">Tracking Odyssey Progress</string>
+</resources>

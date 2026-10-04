@@ -1,0 +1,4 @@
+"NSUserTrackingUsageDescription" = "ユーザーの興味関心に合わせた最適な広告を表示するためにトラッキングを使用します。";
+"NSHealthShareUsageDescription" = "歩数を取得して、歴史の旅を進めるためにヘルスケアデータを使用します。";
+"NSHealthUpdateUsageDescription" = "歩数データをヘルスケアと同期するために使用します。";
+"CFBundleDisplayName" = "百万歩の旅";

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "76760324986",
+    "project_id": "one-million-steps-odyssey",
+    "storage_bucket": "one-million-steps-odyssey.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76760324986:android:f3f68cf9fdd514613f54c3",
+        "android_client_info": {
+          "package_name": "com.example.one_million_steps_odyssey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76760324986-4sfp0og45jlonqi55m629nroen2v34jg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqSbhu2fAMwRA74E3l5PHXM61h4IpWZ9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76760324986-4sfp0og45jlonqi55m629nroen2v34jg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "76760324986-0h46bm26rat5td10kbuh29j2onjfeota.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oneMillionStepsOdyssey"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
