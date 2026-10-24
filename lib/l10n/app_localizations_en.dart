@@ -284,4 +284,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get milestoneGetArtifact => 'Discover';
+
+  @override
+  String get hallOfFameTitle => 'Hall of Fame';
+
+  @override
+  String get hallOfFameEras => 'Eras';
+
+  @override
+  String get hallOfFameArtifacts => 'Artifacts';
+
+  @override
+  String get hallOfFameEmpty => 'No collected items yet';
 }

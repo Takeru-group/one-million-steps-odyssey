@@ -52,6 +52,7 @@ class _HistoryViewState extends State<HistoryView> {
     required String description,
     required String imagePath,
     required dynamic unlockedAt,
+    String? imageTitle,
   }) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final langCode = Localizations.localeOf(context).languageCode;
@@ -170,6 +171,20 @@ class _HistoryViewState extends State<HistoryView> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+
+                  if (imageTitle != null && imageTitle.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    Text(
+                      langCode == 'en'
+                          ? 'Image: $imageTitle'
+                          : '画像：$imageTitle',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: subTextColor.withOpacity(0.85),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -190,6 +205,7 @@ class _HistoryViewState extends State<HistoryView> {
     }
 
     final user = widget.detailedData!.user;
+    final userGameMode = user.gameMode;
     final unlockedEras = user.unlockedEras;
     final unlockedArtifacts = user.unlockedArtifacts;
 
@@ -197,6 +213,9 @@ class _HistoryViewState extends State<HistoryView> {
 
     // 1. 年代（Eras）の処理
     unlockedEras.forEach((eraKey, eraData) {
+      final eraGameMode = (eraData['gameMode'] as num?)?.toInt() ?? 0;
+      if (eraGameMode != userGameMode) return;
+
       final century = (eraData['century'] as num?)?.toInt() ?? 1;
       final unlockedAt = eraData['unlockedAt'];
 
@@ -207,6 +226,12 @@ class _HistoryViewState extends State<HistoryView> {
       final descJp = eraData['descriptionJp'] as String? ?? '';
       final descEn = eraData['descriptionEn'] as String? ?? '';
       final description = currentLocale == 'en' ? descEn : descJp;
+
+      final imageTitleJp = eraData['imageTitleJp'] as String? ?? '';
+      final imageTitleEn = eraData['imageTitleEn'] as String? ?? '';
+      final imageTitle = currentLocale == 'en'
+          ? (imageTitleEn.isNotEmpty ? imageTitleEn : imageTitleJp)
+          : imageTitleJp;
 
       final displayTitle = l10n.eraReachedMessage(label);
       final imagePath = eraData['thumbnailPath'] as String? ?? eraData['backgroundImagePath'] as String? ?? '';
@@ -220,6 +245,7 @@ class _HistoryViewState extends State<HistoryView> {
         'description': description,
         'imagePath': imagePath,
         'fullImagePath': fullImagePath,
+        'imageTitle': imageTitle,
       };
 
       centuryGroups.putIfAbsent(century, () => []).add(item);
@@ -227,6 +253,9 @@ class _HistoryViewState extends State<HistoryView> {
 
     // 2. アーティファクト（Artifacts）の処理
     unlockedArtifacts.forEach((artifactId, artifactData) {
+      final artifactGameMode = (artifactData['gameMode'] as num?)?.toInt() ?? 0;
+      if (artifactGameMode != userGameMode) return;
+
       final unlockedAt = artifactData['unlockedAt'];
 
       final nameJa = artifactData['nameJa'] as String? ?? '';
@@ -262,6 +291,7 @@ class _HistoryViewState extends State<HistoryView> {
         'description': description,
         'imagePath': imagePath,
         'fullImagePath': fullImagePath,
+        'imageTitle': artifactName,
       };
 
       centuryGroups.putIfAbsent(century, () => []).add(item);
@@ -401,6 +431,7 @@ class _HistoryViewState extends State<HistoryView> {
                               description: description,
                               imagePath: fullImagePath,
                               unlockedAt: unlockedAt,
+                              imageTitle: item['imageTitle'] as String?,
                             );
                           },
                         );

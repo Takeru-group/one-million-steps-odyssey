@@ -1,0 +1,618 @@
+import 'dart:ui';
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import '../l10n/app_localizations.dart';
+import '../utils/user_repository.dart';
+import '../widgets/animated_background.dart';
+
+class HallOfFamePage extends StatefulWidget {
+  final UserDetailedData? detailedData;
+  final String? bgImageUrl;
+
+  const HallOfFamePage({
+    super.key,
+    required this.detailedData,
+    this.bgImageUrl,
+  });
+
+  @override
+  State<HallOfFamePage> createState() => _HallOfFamePageState();
+}
+
+class _HallOfFamePageState extends State<HallOfFamePage> {
+  /// 世紀ごとの開閉状態を保持するマップ (key: century, value: bool)
+  final Map<int, bool> _expandedStates = {};
+
+  String _formatDate(dynamic date) {
+    if (date == null) return '----/--/--';
+    DateTime dt;
+    if (date is DateTime) {
+      dt = date.toLocal();
+    } else {
+      try {
+        dt = (date as dynamic).toDate().toLocal();
+      } catch (_) {
+        return '----/--/--';
+      }
+    }
+    return '${dt.year}/${dt.month.toString().padLeft(2, '0')}/${dt.day.toString().padLeft(2, '0')}';
+  }
+
+  String _formatCenturyHeader(
+      BuildContext context, AppLocalizations l10n, int century) {
+    final langCode = Localizations.localeOf(context).languageCode;
+    final absCentury = century.abs();
+    if (century < 0) {
+      return l10n.historyCenturyBce(absCentury);
+    } else {
+      if (langCode == 'ja') {
+        return '西暦 $century 世紀';
+      }
+      return l10n.historyCenturyCe(absCentury);
+    }
+  }
+
+  void _showDetailBottomSheet({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required String imagePath,
+    required dynamic unlockedAt,
+    String? imageTitle,
+  }) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final langCode = Localizations.localeOf(context).languageCode;
+
+    final sheetBgColor = isDarkMode
+        ? Colors.black.withValues(alpha: 0.65)
+        : Colors.white.withValues(alpha: 0.75);
+    final borderColor = isDarkMode
+        ? Colors.white.withValues(alpha: 0.15)
+        : Colors.white.withValues(alpha: 0.50);
+    final handleColor = isDarkMode
+        ? Colors.white.withValues(alpha: 0.30)
+        : Colors.black.withValues(alpha: 0.20);
+    final textColor = isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor = isDarkMode ? Colors.white70 : Colors.black54;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
+              decoration: BoxDecoration(
+                color: sheetBgColor,
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(24)),
+                border: Border.all(color: borderColor),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: handleColor,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  if (imagePath.isNotEmpty) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: CachedNetworkImage(
+                          imageUrl: imagePath,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => Container(
+                            color: Colors.grey.withValues(alpha: 0.3),
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                          errorWidget: (_, __, ___) => Container(
+                            color: Colors.grey.withValues(alpha: 0.3),
+                            child: Icon(Icons.history_edu,
+                                size: 48, color: textColor),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        langCode == 'en'
+                            ? '* Image generated by AI'
+                            : '※ この画像は生成AIにより作成されています',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: subTextColor.withValues(alpha: 0.7),
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                  ],
+
+                  Text(
+                    _formatDate(unlockedAt),
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: subTextColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  if (description.isNotEmpty)
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 14,
+                        height: 1.6,
+                        color: subTextColor,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+
+                  if (imageTitle != null && imageTitle.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    Text(
+                      langCode == 'en'
+                          ? 'Image: $imageTitle'
+                          : '画像：$imageTitle',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: subTextColor.withValues(alpha: 0.85),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildThumbnailItem({
+    required BuildContext context,
+    required Map<String, dynamic> item,
+    required bool isDarkMode,
+  }) {
+    final imagePath = item['imagePath'] as String? ?? '';
+    final fullImagePath = item['fullImagePath'] as String? ?? imagePath;
+    final title = item['title'] as String? ?? '';
+    final description = item['description'] as String? ?? '';
+    final unlockedAt = item['unlockedAt'];
+
+    return GestureDetector(
+      onTap: () {
+        _showDetailBottomSheet(
+          context: context,
+          title: title,
+          description: description,
+          imagePath: fullImagePath,
+          unlockedAt: unlockedAt,
+          imageTitle: item['imageTitle'] as String?,
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          width: 54,
+          height: 54,
+          decoration: BoxDecoration(
+            color: isDarkMode
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isDarkMode
+                  ? Colors.white.withValues(alpha: 0.15)
+                  : Colors.black.withValues(alpha: 0.10),
+            ),
+          ),
+          child: imagePath.isNotEmpty
+              ? CachedNetworkImage(
+                  imageUrl: imagePath,
+                  fit: BoxFit.cover,
+                  placeholder: (_, __) => Container(
+                    color: Colors.grey.withValues(alpha: 0.2),
+                    child: const Center(
+                      child: SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (_, __, ___) => Icon(
+                    item['type'] == 'era'
+                        ? Icons.history_edu
+                        : Icons.auto_awesome,
+                    size: 24,
+                    color: isDarkMode ? Colors.white70 : Colors.black54,
+                  ),
+                )
+              : Icon(
+                  item['type'] == 'era'
+                      ? Icons.history_edu
+                      : Icons.auto_awesome,
+                  size: 24,
+                  color: isDarkMode ? Colors.white70 : Colors.black54,
+                ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final currentLocale = Localizations.localeOf(context).languageCode;
+
+    final textColor = isDarkMode ? Colors.white : Colors.black87;
+    final subTextColor = isDarkMode ? Colors.white70 : Colors.black54;
+
+    // ゲームモードによらず全ての獲得アイテムを世紀ごとに分類
+    final Map<int, List<Map<String, dynamic>>> erasByCentury = {};
+    final Map<int, List<Map<String, dynamic>>> artifactsByCentury = {};
+    final Set<int> allCenturies = {};
+
+    if (widget.detailedData != null) {
+      final user = widget.detailedData!.user;
+
+      // 1. 年代（Eras）- ゲームモード不問
+      user.unlockedEras.forEach((eraKey, eraData) {
+        final century = (eraData['century'] as num?)?.toInt() ?? 1;
+        final unlockedAt = eraData['unlockedAt'];
+
+        final labelJp = eraData['yearLabelJp'] as String? ??
+            eraData['eraLabel'] as String? ??
+            '';
+        final labelEn = eraData['yearLabelEn'] as String? ??
+            eraData['eraLabel'] as String? ??
+            '';
+        final label = currentLocale == 'en' ? labelEn : labelJp;
+
+        final descJp = eraData['descriptionJp'] as String? ?? '';
+        final descEn = eraData['descriptionEn'] as String? ?? '';
+        final description = currentLocale == 'en' ? descEn : descJp;
+
+        final imageTitleJp = eraData['imageTitleJp'] as String? ?? '';
+        final imageTitleEn = eraData['imageTitleEn'] as String? ?? '';
+        final imageTitle = currentLocale == 'en'
+            ? (imageTitleEn.isNotEmpty ? imageTitleEn : imageTitleJp)
+            : imageTitleJp;
+
+        final displayTitle = l10n.eraReachedMessage(label);
+        final imagePath = eraData['thumbnailPath'] as String? ??
+            eraData['backgroundImagePath'] as String? ??
+            '';
+        final fullImagePath =
+            eraData['backgroundImagePath'] as String? ?? imagePath;
+
+        final item = {
+          'type': 'era',
+          'id': eraKey,
+          'unlockedAt': unlockedAt,
+          'title': displayTitle,
+          'description': description,
+          'imagePath': imagePath,
+          'fullImagePath': fullImagePath,
+          'imageTitle': imageTitle,
+        };
+
+        allCenturies.add(century);
+        erasByCentury.putIfAbsent(century, () => []).add(item);
+      });
+
+      // 2. アーティファクト（Artifacts）- ゲームモード不問
+      user.unlockedArtifacts.forEach((artifactId, artifactData) {
+        final unlockedAt = artifactData['unlockedAt'];
+
+        final nameJa = artifactData['nameJa'] as String? ?? '';
+        final nameEn = artifactData['nameEn'] as String? ?? '';
+        final artifactName = currentLocale == 'en'
+            ? (nameEn.isNotEmpty ? nameEn : nameJa)
+            : nameJa;
+
+        final descJa = artifactData['descJa'] as String? ?? '';
+        final descEn = artifactData['descEn'] as String? ?? '';
+        final description = currentLocale == 'en'
+            ? (descEn.isNotEmpty ? descEn : descJa)
+            : descJa;
+
+        final category =
+            (artifactData['category'] as String? ?? '').toLowerCase();
+        final century = (artifactData['century'] as num?)?.toInt() ?? 1;
+
+        final imagePath = artifactData['thumbnailPath'] as String? ??
+            artifactData['backgroundImagePath'] as String? ??
+            '';
+        final fullImagePath =
+            artifactData['backgroundImagePath'] as String? ?? imagePath;
+
+        final bool isPerson = category == 'figure' ||
+            category == 'person' ||
+            category == '偉人' ||
+            category == '人物' ||
+            category.contains('figure') ||
+            category.contains('person');
+
+        final displayTitle = isPerson
+            ? l10n.figureMet(artifactName)
+            : l10n.artifactDiscoveredMessage(artifactName);
+
+        final item = {
+          'type': 'artifact',
+          'id': artifactId,
+          'unlockedAt': unlockedAt,
+          'title': displayTitle,
+          'description': description,
+          'imagePath': imagePath,
+          'fullImagePath': fullImagePath,
+          'imageTitle': artifactName,
+        };
+
+        allCenturies.add(century);
+        artifactsByCentury.putIfAbsent(century, () => []).add(item);
+      });
+    }
+
+    final sortedCenturies = allCenturies.toList()..sort((a, b) => b.compareTo(a));
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: isDarkMode
+            ? Colors.black.withValues(alpha: 0.35)
+            : Colors.white.withValues(alpha: 0.45),
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+            color: textColor,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          l10n.hallOfFameTitle,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: textColor,
+          ),
+        ),
+        flexibleSpace: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: isDarkMode
+                        ? Colors.white.withValues(alpha: 0.12)
+                        : Colors.black.withValues(alpha: 0.08),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: AnimatedBackground(
+              key: ValueKey(widget.bgImageUrl ?? 'hall_of_fame_fallback'),
+              imageUrl: widget.bgImageUrl,
+              fallbackAssetPath: 'assets/images/mainback1.jpeg',
+              isDarkMode: isDarkMode,
+            ),
+          ),
+          SafeArea(
+            child: sortedCenturies.isEmpty
+                ? Center(
+                    child: Text(
+                      l10n.hallOfFameEmpty,
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: subTextColor,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    itemCount: sortedCenturies.length,
+                    itemBuilder: (context, index) {
+                      final century = sortedCenturies[index];
+                      final eras = erasByCentury[century] ?? [];
+                      final artifacts = artifactsByCentury[century] ?? [];
+
+                      // デフォルトは最新（index == 0）を展開
+                      _expandedStates.putIfAbsent(century, () => index == 0);
+                      final isExpanded = _expandedStates[century]!;
+
+                      final headerBgColor = isDarkMode
+                          ? Colors.white.withValues(alpha: 0.14)
+                          : Colors.white.withValues(alpha: 0.85);
+                      final bodyBgColor = isDarkMode
+                          ? Colors.black.withValues(alpha: 0.45)
+                          : Colors.white.withValues(alpha: 0.60);
+                      final borderColor = isDarkMode
+                          ? Colors.white.withValues(alpha: 0.18)
+                          : Colors.white.withValues(alpha: 0.40);
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(color: borderColor),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // 世紀ヘッダー
+                                  Material(
+                                    color: headerBgColor,
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _expandedStates[century] =
+                                              !isExpanded;
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 14),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                _formatCenturyHeader(
+                                                    context, l10n, century),
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: textColor,
+                                                ),
+                                              ),
+                                            ),
+                                            Icon(
+                                              isExpanded
+                                                  ? Icons.keyboard_arrow_up
+                                                  : Icons.keyboard_arrow_down,
+                                              color: textColor,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  // アコーディオン展開ボディ
+                                  if (isExpanded)
+                                    Container(
+                                      color: bodyBgColor,
+                                      padding: const EdgeInsets.all(16),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // 年代セクション
+                                          if (eras.isNotEmpty) ...[
+                                            Text(
+                                              l10n.hallOfFameEras,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: textColor,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Wrap(
+                                              spacing: 12,
+                                              runSpacing: 12,
+                                              children: eras.map((item) {
+                                                return _buildThumbnailItem(
+                                                  context: context,
+                                                  item: item,
+                                                  isDarkMode: isDarkMode,
+                                                );
+                                              }).toList(),
+                                            ),
+                                            const SizedBox(height: 18),
+                                          ],
+
+                                          // アーティファクトセクション
+                                          if (artifacts.isNotEmpty) ...[
+                                            Text(
+                                              l10n.hallOfFameArtifacts,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: textColor,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Wrap(
+                                              spacing: 12,
+                                              runSpacing: 12,
+                                              children: artifacts.map((item) {
+                                                return _buildThumbnailItem(
+                                                  context: context,
+                                                  item: item,
+                                                  isDarkMode: isDarkMode,
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ],
+
+                                          if (eras.isEmpty &&
+                                              artifacts.isEmpty)
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                              child: Text(
+                                                l10n.hallOfFameEmpty,
+                                                style: TextStyle(
+                                                  fontSize: 13,
+                                                  color: subTextColor,
+                                                ),
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}

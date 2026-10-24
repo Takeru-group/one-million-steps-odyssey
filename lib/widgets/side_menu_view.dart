@@ -7,17 +7,23 @@ import '../l10n/app_localizations.dart';
 import '../main.dart';
 import '../models/user_model.dart';
 import '../utils/background_fetch_service.dart';
+import '../pages/hall_of_fame_page.dart';
+import '../pages/initial_page.dart';
 import '../utils/step_tracker_service.dart';
 import '../utils/user_repository.dart';
 
 class SideMenuView extends StatefulWidget {
   final User? user;
   final UserModel? userData;
+  final UserDetailedData? detailedData;
+  final String? bgImageUrl;
 
   const SideMenuView({
     super.key,
     required this.user,
     required this.userData,
+    this.detailedData,
+    this.bgImageUrl,
   });
 
   @override
@@ -99,6 +105,9 @@ class _SideMenuViewState extends State<SideMenuView> {
         : Colors.white.withOpacity(0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
 
+    final navigator = Navigator.of(context, rootNavigator: true);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+
     final bool? shouldLogout = await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -138,25 +147,28 @@ class _SideMenuViewState extends State<SideMenuView> {
     );
 
     if (shouldLogout != true) return;
+    if (!mounted) return;
 
-    // ローディング表示
-    if (mounted) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (_) => const Center(child: CircularProgressIndicator()),
-      );
-    }
+    // ローディング表示（rootNavigator を使用して確実に管理）
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      useRootNavigator: true,
+      builder: (_) => const PopScope(
+        canPop: false,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+    );
 
     try {
-      // 1. 歩数保存を厳格に実行（タイムアウト5秒）
+      // 1. 歩数保存を厳格に実行（タイムアウト4秒）
       if (widget.user != null && widget.userData != null) {
         print('⏳ [Logout] 歩数データの保存を開始します...');
         await _userRepository.saveStepsOnLogout(
           userId: widget.user!.uid,
           todaySteps: widget.userData!.steps,
           totalSteps: widget.userData!.totalSteps,
-        ).timeout(const Duration(seconds: 5));
+        ).timeout(const Duration(seconds: 4));
         print('✅ [Logout] 歩数データの保存に成功しました！');
       }
 
@@ -168,26 +180,29 @@ class _SideMenuViewState extends State<SideMenuView> {
       await Future.wait([
         FirebaseAuth.instance.signOut(),
         GoogleSignIn().signOut(),
-      ]).timeout(const Duration(seconds: 3));
+      ]).timeout(const Duration(seconds: 4));
 
       // 4. ローディングモーダルを閉じる
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      navigator.pop();
+
+      // 5. ログイン・初期画面へ完全に画面スタックを一掃して遷移
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const InitialPage()),
+        (route) => false,
+      );
     } catch (e) {
       print('❌ [Logout Failure] 保存またはサインアウト失敗: $e');
 
       // エラー発生時はローディングを解除して失敗メッセージを表示
-      if (mounted) {
-        Navigator.pop(context); // ローディングポップアップを閉じる
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('データの保存に失敗したためログアウトできませんでした: ${e.toString()}'),
-            backgroundColor: Colors.redAccent,
-            duration: const Duration(seconds: 4),
-          ),
-        );
-      }
+      navigator.pop(); // ローディングポップアップを閉じる
+
+      scaffoldMessenger.showSnackBar(
+        SnackBar(
+          content: Text('データの保存に失敗したためログアウトを中止しました。通信環境をご確認ください: ${e.toString()}'),
+          backgroundColor: Colors.redAccent,
+          duration: const Duration(seconds: 4),
+        ),
+      );
     }
   }
 
@@ -307,6 +322,36 @@ class _SideMenuViewState extends State<SideMenuView> {
                           fontWeight: FontWeight.bold, color: textColor),
                     ),
                   ),
+
+                Divider(color: borderColor),
+
+                ListTile(
+                  leading: const Icon(Icons.account_balance, color: Colors.amberAccent),
+                  title: Text(
+                    l10n.hallOfFameTitle,
+                    style: TextStyle(
+                      color: textColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                    color: subTextColor,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context); // サイドメニューを閉じる
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => HallOfFamePage(
+                          detailedData: widget.detailedData,
+                          bgImageUrl: widget.bgImageUrl,
+                        ),
+                      ),
+                    );
+                  },
+                ),
 
                 Divider(color: borderColor),
 

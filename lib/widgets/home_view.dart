@@ -25,9 +25,9 @@ class HomeView extends StatelessWidget {
         ? historyMaster!.getDescription(langCode)
         : l10n.homeDefaultDescription;
 
-    final titleText = historyMaster != null
-        ? historyMaster!.getTitle(langCode)
-        : (appDate != null ? appDate!.toLocalizedFormattedString(context) : '');
+    final dateTitle =
+        appDate != null ? appDate!.toLocalizedFormattedString(context) : '';
+    final imageTitle = historyMaster?.getTitle(langCode) ?? '';
 
     final imagePath = historyMaster?.backgroundImagePath ?? '';
 
@@ -121,9 +121,9 @@ class HomeView extends StatelessWidget {
                   ),
                   const SizedBox(height: 14),
 
-                  if (titleText.isNotEmpty) ...[
+                  if (dateTitle.isNotEmpty) ...[
                     Text(
-                      titleText,
+                      dateTitle,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -142,6 +142,20 @@ class HomeView extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+
+                  if (imageTitle.isNotEmpty) ...[
+                    const SizedBox(height: 14),
+                    Text(
+                      langCode == 'en'
+                          ? 'Image: $imageTitle'
+                          : '画像：$imageTitle',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: subTextColor.withOpacity(0.85),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

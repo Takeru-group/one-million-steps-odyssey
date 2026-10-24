@@ -176,5 +176,10 @@
   "milestone6kDesc": "You reached 6,000 steps today!\nYou earned an artifact!",
   "milestone10kTitle": "🎉 10,000 Steps Milestone!",
   "milestone10kDesc": "Amazing! You reached 10,000 steps today!\nYou earned an artifact!",
-  "milestoneGetArtifact": "Discover"
+  "milestoneGetArtifact": "Discover",
+
+  "hallOfFameTitle": "Hall of Fame",
+  "hallOfFameEras": "Eras",
+  "hallOfFameArtifacts": "Artifacts",
+  "hallOfFameEmpty": "No collected items yet"
 }

@@ -275,4 +275,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get milestoneGetArtifact => '獲得する';
+
+  @override
+  String get hallOfFameTitle => '歴史の殿堂';
+
+  @override
+  String get hallOfFameEras => '年代';
+
+  @override
+  String get hallOfFameArtifacts => 'アーティファクト';
+
+  @override
+  String get hallOfFameEmpty => '獲得したアイテムはありません';
 }

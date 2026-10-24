@@ -36,10 +36,16 @@ class AppDateResult {
     return '$eraCode ${year.toString().padLeft(4, '0')}-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
   }
 
-  /// 世紀（int）を算出（1年〜100年 ➔ 1世紀、前1年〜前100年 ➔ 前1世紀）
+  /// 世紀（int）を算出
+  /// 紀元前（BC）: 前1年〜100年 ➔ 前1世紀、前101年〜200年 ➔ 前2世紀、前201年〜300年 ➔ 前3世紀
+  /// 西暦（AD）: 1〜99年 ➔ 1世紀、100〜199年（100年代） ➔ 2世紀、200〜299年（200年代） ➔ 3世紀
   int get century {
-    final c = ((year - 1) ~/ 100) + 1;
-    return (era == '紀元前' || era == 'BCE') ? -c : c;
+    if (era == '紀元前' || era == 'BCE') {
+      final c = ((year - 1) ~/ 100) + 1;
+      return -c;
+    } else {
+      return (year ~/ 100) + 1;
+    }
   }
 
   /// 10年単位の年代（Decade）表示用ラベル生成（例: 前109年 ➔ BC100年代）

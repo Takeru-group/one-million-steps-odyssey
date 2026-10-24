@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 import '../l10n/app_localizations.dart';
 import '../models/user_model.dart';
@@ -34,6 +36,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final UserRepository _userRepository = UserRepository();
   final MasterDataRepository _masterDataRepository = MasterDataRepository();
   final AdManager _adManager = AdManager();
+  final InAppReview _inAppReview = InAppReview.instance;
 
   UserDetailedData? _detailedData;
   bool _isLoading = true;
@@ -108,6 +111,9 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         _initPermissionsAndStepTracking(data);
         _checkAndPrepareAd();
 
+        // 裏でインタースティシャル広告をロード
+        _adManager.loadInterstitialAd();
+
         if (widget.isJustLoggedIn) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             AppDialogs.showWelcomeHealthNoticeDialog(context);
@@ -115,12 +121,12 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         }
       }
     } catch (e) {
-      print('❌ [MainPage] ユーザーデータ読み込みエラー: $e');
+      print('❌ [MainPage] ユーザーデータ読み込みエラー: \$e');
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
-  /// 🌟 広告ロード要求（UI表示条件とは完全に切り離して安全にロード）
+  /// 🌟 リワード広告の安全なプリロード
   void _checkAndPrepareAd() {
     final user = _detailedData?.user;
     if (user == null) return;
@@ -129,7 +135,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     _adManager.loadRewardedAd(
       onAdLoaded: () {
-        if (mounted) setState(() {}); // 広告準備完了時に描画更新
+        if (mounted) setState(() {});
       },
       onAdFailed: () {
         if (mounted) setState(() {});
@@ -190,6 +196,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     }
   }
 
+  /// 🌟 歩数更新・イベントチェーン
   void _onStepsUpdated(int incrementalSteps, int todaySteps) async {
     if (!mounted || _detailedData == null) return;
 
@@ -206,7 +213,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         _detailedData!.user.totalSteps + _incrementalSteps;
     final calculatedEraKey = _calculateCurrentEraKey(currentTotalSteps);
 
-    // 1. 年代到達イベント判定（最優先）
+    // 1. 最優先: 年代・世紀到達イベント
     if (_currentEraKey != null &&
         calculatedEraKey != _currentEraKey &&
         !_isUpdatingEra) {
@@ -215,15 +222,16 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       return;
     }
 
-    // 2. 6,000歩 / 10,000歩マイルストーンポップアウト判定
+    // 2. 第2優先: 6,000歩 / 10,000歩マイルストーンポップアウト判定
     if (!_isUpdatingEra && !_isShowingDialog) {
       _checkAndShowStepMilestoneDialog(todaySteps);
     }
 
-    // 3. 広告ロード確認
+    // 3. 広告ボタンの準備チェック
     _checkAndPrepareAd();
   }
 
+  /// 🌟 6,000歩 → 10,000歩のマイルストーン判定
   Future<void> _checkAndShowStepMilestoneDialog(int todaySteps) async {
     if (todaySteps < 6000 || _detailedData == null) return;
 
@@ -237,7 +245,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     final is6kUnlockedToday = _isSameDayAsToday(userModel.steps6kUnlockedAt);
     final is10kUnlockedToday = _isSameDayAsToday(userModel.steps10kUnlockedAt);
 
-    // ① 6,000歩達成判定 (本日未取得の場合)
+    // ① 6,000歩達成判定
     if (todaySteps >= 6000 && !is6kUnlockedToday) {
       _isShowingDialog = true;
 
@@ -262,7 +270,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       return;
     }
 
-    // ② 10,000歩達成判定 (6,000歩取得済み ＆ 10,000歩が本日未取得の場合)
+    // ② 10,000歩達成判定 (6,000歩取得済み ＆ 10,000歩が本日未取得)
     if (todaySteps >= 10000 && is6kUnlockedToday && !is10kUnlockedToday) {
       _isShowingDialog = true;
 
@@ -301,12 +309,26 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     return UserRepository.calculateEraKey(currentDate.era, currentDate.year);
   }
 
+  /// 🌟 年代更新 ＆ 世紀（Century）跨ぎイベントの統括処理
   Future<void> _handleEraUnlocked(String newEraKey, int newTotalSteps) async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null || _detailedData == null) return;
 
     _isShowingDialog = true;
     final userData = _detailedData!.user;
+
+    // 遷移前の世紀を計算
+    final previousDate = TimelineCalculator.addStepsToDate(
+      era: userData.startEra,
+      year: userData.startYear,
+      month: userData.startMonth,
+      day: userData.startDay,
+      steps: userData.totalSteps,
+      stepsPerDay: 1,
+    );
+    final previousCentury = previousDate.century;
+
+    // 遷移後の世紀を計算
     final currentDate = TimelineCalculator.addStepsToDate(
       era: userData.startEra,
       year: userData.startYear,
@@ -315,13 +337,19 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       steps: newTotalSteps,
       stepsPerDay: 1,
     );
-
+    final newCentury = currentDate.century;
     final eraLabel = currentDate.eraLabel;
 
+    // 1. 年代開放ダイアログ（世紀更新時は世紀突入メッセージを含む）の表示
     if (mounted) {
-      await AppDialogs.showEraUnlockedDialog(context, eraLabel);
+      await AppDialogs.showEraUnlockedDialog(
+        context: context,
+        eraLabel: eraLabel,
+        newCentury: previousCentury != newCentury ? newCentury : null,
+      );
     }
 
+    // 2. Firestore更新
     try {
       final updatedDetails = await _userRepository.updateUserEraProgress(
         userId: user.uid,
@@ -337,8 +365,6 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           _detailedData = updatedDetails;
           _incrementalSteps = 0;
           _currentEraKey = newEraKey;
-          _isUpdatingEra = false;
-          _isShowingDialog = false;
         });
 
         _resolveBgUrlAsync();
@@ -353,9 +379,52 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         );
       }
     } catch (e) {
-      print('❌ [MainPage] 年代更新保存エラー: $e');
-      _isUpdatingEra = false;
-      _isShowingDialog = false;
+      print('❌ [MainPage] 年代更新保存エラー: \$e');
+    }
+
+    // 3. 世紀（Century）変更判定 ＆ レビュー促し / インタースティシャル広告の制御
+    if (previousCentury != newCentury) {
+      print('🏛 [CenturyTransition] 世紀が変わりました: \$previousCentury C ➔ \$newCentury C');
+      await _handleCenturyTransitionAction(newCentury);
+    }
+
+    _isUpdatingEra = false;
+    _isShowingDialog = false;
+
+    // 4. 後続の6,000歩 / 10,000歩マイルストーンチェックを非同期で実行
+    _checkAndShowStepMilestoneDialog(_todaySteps);
+  }
+
+  /// 🌟 世紀跨ぎ時の アプリ内レビュー または インタースティシャル広告 制御
+  Future<void> _handleCenturyTransitionAction(int newCentury) async {
+    // レビュー対象の世紀： 紀元前6世紀(-6)、1世紀(1)、8世紀(8)、16世紀(16)
+    const reviewTargetCenturies = {-6, 1, 8, 16};
+
+    if (reviewTargetCenturies.contains(newCentury)) {
+      print('⭐ [ReviewPrompt] 達成対象世紀 (\$newCentury Century) のためレビューを依頼します');
+      try {
+        if (await _inAppReview.isAvailable()) {
+          await _inAppReview.requestReview();
+        }
+      } catch (e) {
+        print('⚠ [ReviewPrompt] レビューダイアログの表示エラー（スルー）: \$e');
+      }
+    } else {
+      print('🎬 [Interstitial] インタースティシャル広告を表示します (\$newCentury Century)');
+      
+      final completer = Completer<void>();
+
+      _adManager.showInterstitialAd(
+        onAdClosed: () {
+          if (!completer.isCompleted) {
+            completer.complete();
+          }
+          // 次回の世紀跨ぎ用にバックグラウンドで事前ロード
+          _adManager.loadInterstitialAd();
+        },
+      );
+
+      await completer.future;
     }
   }
 
@@ -401,14 +470,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           _detailedData = updatedDetails;
         });
 
-        // 獲得後の広告再評価
         _checkAndPrepareAd();
 
         AppDialogs.showArtifactRewardModal(context, acquiredArtifact);
       }
     } catch (e) {
       if (mounted) Navigator.pop(context);
-      print('❌ [MainPage] アーティファクト獲得エラー: $e');
+      print('❌ [MainPage] アーティファクト獲得エラー: \$e');
     }
   }
 
@@ -504,7 +572,6 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             ? l10n.tabHistory
             : l10n.tabSteps;
 
-    // 🌟 ★ボタン表示条件の単一真実判定 (ホームタブ ＆ 4時間経過済み ＆ 広告ロード完了)
     final bool isShowAdButton = _selectedTabIndex == 0 &&
         _isCooldownExpired(displayUser?.lastArtifactUnlockedAt) &&
         _adManager.isAdReady;
@@ -535,7 +602,12 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           const SizedBox(width: 8),
         ],
       ),
-      drawer: SideMenuView(user: user, userData: displayUser),
+      drawer: SideMenuView(
+        user: user,
+        userData: displayUser,
+        detailedData: _detailedData,
+        bgImageUrl: _resolvedBgUrl,
+      ),
       body: Stack(
         children: [
           Positioned.fill(

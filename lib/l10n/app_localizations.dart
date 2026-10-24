@@ -547,6 +547,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discover'**
   String get milestoneGetArtifact;
+
+  /// No description provided for @hallOfFameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hall of Fame'**
+  String get hallOfFameTitle;
+
+  /// No description provided for @hallOfFameEras.
+  ///
+  /// In en, this message translates to:
+  /// **'Eras'**
+  String get hallOfFameEras;
+
+  /// No description provided for @hallOfFameArtifacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Artifacts'**
+  String get hallOfFameArtifacts;
+
+  /// No description provided for @hallOfFameEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No collected items yet'**
+  String get hallOfFameEmpty;
 }
 
 class _AppLocalizationsDelegate

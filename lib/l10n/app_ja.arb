@@ -176,5 +176,10 @@
   "milestone6kDesc": "本日6,000歩に到達しました！\nアーティファクトを獲得できます！",
   "milestone10kTitle": "🎉 10,000歩達成！",
   "milestone10kDesc": "素晴らしい！本日10,000歩に到達しました！\nアーティファクトを獲得できます！",
-  "milestoneGetArtifact": "獲得する"
+  "milestoneGetArtifact": "獲得する",
+
+  "hallOfFameTitle": "歴史の殿堂",
+  "hallOfFameEras": "年代",
+  "hallOfFameArtifacts": "アーティファクト",
+  "hallOfFameEmpty": "獲得したアイテムはありません"
 }
