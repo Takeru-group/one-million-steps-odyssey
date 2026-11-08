@@ -234,21 +234,18 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   /// 🌟 6,000歩 → 10,000歩のマイルストーン判定
   Future<void> _checkAndShowStepMilestoneDialog(int todaySteps) async {
     if (todaySteps < 6000 || _detailedData == null) return;
-
     final l10n = AppLocalizations.of(context);
     if (l10n == null) return;
-
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    final userModel = _detailedData!.user;
-    final is6kUnlockedToday = _isSameDayAsToday(userModel.steps6kUnlockedAt);
-    final is10kUnlockedToday = _isSameDayAsToday(userModel.steps10kUnlockedAt);
+    var currentUserModel = _detailedData!.user;
+    var is6kUnlockedToday = _isSameDayAsToday(currentUserModel.steps6kUnlockedAt);
+    var is10kUnlockedToday = _isSameDayAsToday(currentUserModel.steps10kUnlockedAt);
 
-    // ① 6,000歩達成判定
+    // ① 6,000歩達成判定 (本日未取得の場合)
     if (todaySteps >= 6000 && !is6kUnlockedToday) {
       _isShowingDialog = true;
-
       if (mounted) {
         await AppDialogs.showMilestoneStepDialog(
           context: context,
@@ -256,24 +253,27 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           description: l10n.milestone6kDesc,
           buttonText: l10n.milestoneGetArtifact,
         );
-
         final now = DateTime.now();
         await _userRepository.updateMilestoneUnlockedAt(
           userId: user.uid,
           milestoneType: 6000,
           unlockedAt: now,
         );
-
         await _handleArtifactDiscovery(fromAd: false);
       }
       _isShowingDialog = false;
-      return;
+
+      // 6,000歩獲得後の最新データを反映し、同ターンでの10,000歩判定用フラグを更新
+      if (_detailedData != null) {
+        currentUserModel = _detailedData!.user;
+        is6kUnlockedToday = true;
+        is10kUnlockedToday = _isSameDayAsToday(currentUserModel.steps10kUnlockedAt);
+      }
     }
 
-    // ② 10,000歩達成判定 (6,000歩取得済み ＆ 10,000歩が本日未取得)
+    // ② 10,000歩達成判定 (6,000歩取得済み ＆ 10,000歩が本日未取得の場合)
     if (todaySteps >= 10000 && is6kUnlockedToday && !is10kUnlockedToday) {
       _isShowingDialog = true;
-
       if (mounted) {
         await AppDialogs.showMilestoneStepDialog(
           context: context,
@@ -281,14 +281,12 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           description: l10n.milestone10kDesc,
           buttonText: l10n.milestoneGetArtifact,
         );
-
         final now = DateTime.now();
         await _userRepository.updateMilestoneUnlockedAt(
           userId: user.uid,
           milestoneType: 10000,
           unlockedAt: now,
         );
-
         await _handleArtifactDiscovery(fromAd: false);
       }
       _isShowingDialog = false;
@@ -403,11 +401,12 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     if (reviewTargetCenturies.contains(newCentury)) {
       print('⭐ [ReviewPrompt] 達成対象世紀 (\$newCentury Century) のためレビューを依頼します');
       try {
-        if (await _inAppReview.isAvailable()) {
+        final isAvailable = await _inAppReview.isAvailable();
+        if (isAvailable) {
           await _inAppReview.requestReview();
         }
       } catch (e) {
-        print('⚠ [ReviewPrompt] レビューダイアログの表示エラー（スルー）: \$e');
+        print('⚠ [ReviewPrompt] レビューダイアログの表示エラー（スルー）: $e');
       }
     } else {
       print('🎬 [Interstitial] インタースティシャル広告を表示します (\$newCentury Century)');

@@ -1,0 +1,49 @@
+{
+  "output": {
+    "filePath": "repomix-output.xml",
+    "style": "xml",
+    "removeComments": false,
+    "removeEmptyLines": true,
+    "showLineNumbers": false,
+    "topFilesLength": 10
+  },
+  "include": [
+    "lib/**",
+    "android/app/build.gradle.kts",
+    "android/app/src/main/AndroidManifest.xml",
+    "ios/Podfile",
+    "ios/Runner/Info.plist",
+    "ios/Runner/AppDelegate.swift",
+    "pubspec.yaml",
+    "analysis_options.yaml",
+    "AGENTS.md"
+  ],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "**/build/**",
+      "**/.dart_tool/**",
+      "**/Pods/**",
+      "**/.symlinks/**",
+      "**/DerivedData/**",
+      "**/*.png",
+      "**/*.jpg",
+      "**/*.jpeg",
+      "**/*.ico",
+      "**/*.xcassets/**",
+      "**/*.storyboard",
+      "**/*.xib",
+      "**/*.lock",
+      "ios/Runner.xcodeproj/**",
+      "ios/Runner.xcworkspace/**",
+      "macos/**",
+      "linux/**",
+      "windows/**",
+      "web/**",
+      "test/**",
+      "lib/l10n/app_localizations*.dart",
+      "repomix-output.*"
+    ]
+  }
+}
