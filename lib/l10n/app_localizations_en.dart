@@ -67,14 +67,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintHomeDesc =>
-      'Time advances through history based on the steps you take (1 step = approx. 1 day).\n\n• Tap the date button at the top to read about the history of your current era.\n• Background images automatically change as you progress through eras.\n• Tap the ★ button on the bottom right to collect historical figures and artifacts.';
+      '[Steps & Timeline Progression]\nYour steps advance human history from antiquity (700s BCE) toward the modern era at the rate of 1 step = approx. 1 day. Steps sync automatically in the background even when closed.\n\n[Eras & Scenery]\n• Tap the top date button to read in-depth historical context and image titles for your current era.\n• As you accumulate steps, you will advance to new eras, automatically updating the background scenery.\n• Crossing a 100-year century mark triggers a special celebration, offering store reviews on milestone centuries and interstitial ads on others.\n\n[Collecting Artifacts]\n• Bottom-Right ★ Button: After a 4-hour cooldown, watch a short video to discover an uncollected artifact from your current era.\n• Daily Step Milestones: Reaching 6,000 and 10,000 steps each day also guarantees an artifact reward.';
 
   @override
   String get hintHistoryTitle => 'How to View History Collection';
 
   @override
   String get hintHistoryDesc =>
-      'This is your collection of unlocked eras and artifacts from your journey.\n\n• Items are organized by century in expandable panels.\n• Tap to expand and view the discovery dates and detailed messages.';
+      '[Collection Layout]\nAll unlocked eras and discovered artifacts from your odyssey are neatly cataloged century by century.\n\n[Item Details]\n• Tap any century header to expand or collapse the item cards.\n• Tap an item to open a detailed modal showing discovery dates, full images, and rich historical stories.\n\n[History vs. Hall of Fame]\n• This History tab displays items collected during your current journey (round).\n• The Hall of Fame in the side menu provides an encyclopedia of all discoveries made across every journey.';
 
   @override
   String get tabSteps => 'Steps';
@@ -136,11 +136,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get hintStepsTitle => 'How to View Step Data';
+  String get hintStepsTitle => 'Step Data & Milestones';
 
   @override
   String get hintStepsDesc =>
-      'View your daily steps, total accumulated steps, and progress over the past 7 days.\n\n• Tap a bar on the chart to view detailed step counts.';
+      '[Tracking Mechanism]\nConnected directly to device health sensors (iOS HealthKit / Android Activity Recognition) to track your daily and overall activity.\n\n[Step Metrics & Charts]\n• View your Today\'s Steps alongside your overall Total Steps from day one.\n• The interactive bar chart illustrates your activity over the past 7 days—tap any bar to inspect specific daily counts.\n\n[Milestone Rewards]\n• 6,000 Steps: Hitting this daily fitness goal awards one guaranteed artifact.\n• 10,000 Steps: Advancing nearly 27 years of history in a single day awards a second guaranteed artifact.\n* Even if synced in batches above 10,000 steps, rewards for 6,000 and 10,000 steps are processed sequentially.';
 
   @override
   String historyReachedEra(Object eraLabel) {

@@ -15,38 +15,48 @@
   "historyReached": "Reached {name}.",
   "@historyReached": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "artifactDiscovered": "Discovered {name}.",
   "@artifactDiscovered": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "figureMet": "Met {name}.",
   "@figureMet": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "hintHomeTitle": "How to Journey on Home",
-  "hintHomeDesc": "Time advances through history based on the steps you take (1 step = approx. 1 day).\n\n• Tap the date button at the top to read about the history of your current era.\n• Background images automatically change as you progress through eras.\n• Tap the ★ button on the bottom right to collect historical figures and artifacts.",
+  "hintHomeDesc": "[Steps & Timeline Progression]\nYour steps advance human history from antiquity (700s BCE) toward the modern era at the rate of 1 step = approx. 1 day. Steps sync automatically in the background even when closed.\n\n[Eras & Scenery]\n• Tap the top date button to read in-depth historical context and image titles for your current era.\n• As you accumulate steps, you will advance to new eras, automatically updating the background scenery.\n• Crossing a 100-year century mark triggers a special celebration, offering store reviews on milestone centuries and interstitial ads on others.\n\n[Collecting Artifacts]\n• Bottom-Right ★ Button: After a 4-hour cooldown, watch a short video to discover an uncollected artifact from your current era.\n• Daily Step Milestones: Reaching 6,000 and 10,000 steps each day also guarantees an artifact reward.",
   "hintHistoryTitle": "How to View History Collection",
-  "hintHistoryDesc": "This is your collection of unlocked eras and artifacts from your journey.\n\n• Items are organized by century in expandable panels.\n• Tap to expand and view the discovery dates and detailed messages.",
+  "hintHistoryDesc": "[Collection Layout]\nAll unlocked eras and discovered artifacts from your odyssey are neatly cataloged century by century.\n\n[Item Details]\n• Tap any century header to expand or collapse the item cards.\n• Tap an item to open a detailed modal showing discovery dates, full images, and rich historical stories.\n\n[History vs. Hall of Fame]\n• This History tab displays items collected during your current journey (round).\n• The Hall of Fame in the side menu provides an encyclopedia of all discoveries made across every journey.",
   "tabSteps": "Steps",
   "homeDefaultDescription": "Around 750 BCE, maritime trade by Phoenicians flourished in the Mediterranean, while Etruscan culture began developing in the Italian Peninsula.",
   "historyEmptyCurrentRound": "No history unlocked in this round yet.",
   "historyCenturyBce": "{century}th Century BCE",
   "@historyCenturyBce": {
     "placeholders": {
-      "century": {"type": "int"}
+      "century": {
+        "type": "int"
+      }
     }
   },
   "historyCenturyCe": "{century}th Century",
   "@historyCenturyCe": {
     "placeholders": {
-      "century": {"type": "int"}
+      "century": {
+        "type": "int"
+      }
     }
   },
   "eraReachedMessage": "Reached {eraLabel}",
@@ -70,55 +80,75 @@
   "stepsToday": "Today's Steps: {steps}",
   "@stepsToday": {
     "placeholders": {
-      "steps": {"type": "int"}
+      "steps": {
+        "type": "int"
+      }
     }
   },
   "stepsUpdatedAt": "Updated: {dateTime}",
   "@stepsUpdatedAt": {
     "placeholders": {
-      "dateTime": {"type": "String"}
+      "dateTime": {
+        "type": "String"
+      }
     }
   },
   "stepsTotal": "Total Steps: {steps}",
   "@stepsTotal": {
     "placeholders": {
-      "steps": {"type": "int"}
+      "steps": {
+        "type": "int"
+      }
     }
   },
   "stepsStartDate": "Started: {date}",
   "@stepsStartDate": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "stepsPast7Days": "Past 7 Days",
   "stepsChartTooltip": "{steps} steps",
   "@stepsChartTooltip": {
     "placeholders": {
-      "steps": {"type": "int"}
+      "steps": {
+        "type": "int"
+      }
     }
   },
-  "hintStepsTitle": "How to View Step Data",
-  "hintStepsDesc": "View your daily steps, total accumulated steps, and progress over the past 7 days.\n\n• Tap a bar on the chart to view detailed step counts.",
+  "hintStepsTitle": "Step Data & Milestones",
+  "hintStepsDesc": "[Tracking Mechanism]\nConnected directly to device health sensors (iOS HealthKit / Android Activity Recognition) to track your daily and overall activity.\n\n[Step Metrics & Charts]\n• View your Today's Steps alongside your overall Total Steps from day one.\n• The interactive bar chart illustrates your activity over the past 7 days—tap any bar to inspect specific daily counts.\n\n[Milestone Rewards]\n• 6,000 Steps: Hitting this daily fitness goal awards one guaranteed artifact.\n• 10,000 Steps: Advancing nearly 27 years of history in a single day awards a second guaranteed artifact.\n* Even if synced in batches above 10,000 steps, rewards for 6,000 and 10,000 steps are processed sequentially.",
   "historyReachedEra": "Reached the {eraLabel}s",
-
   "dateBceFormat": "{year} BCE {month}/{day}",
   "@dateBceFormat": {
     "placeholders": {
-      "year": {"type": "int"},
-      "month": {"type": "int"},
-      "day": {"type": "int"}
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
   "dateCeFormat": "{year} CE {month}/{day}",
   "@dateCeFormat": {
     "placeholders": {
-      "year": {"type": "int"},
-      "month": {"type": "int"},
-      "day": {"type": "int"}
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
-
   "menuChangeNicknameTitle": "Change Nickname",
   "menuChangeNicknameHint": "Enter new nickname",
   "menuCancel": "Cancel",
@@ -127,14 +157,20 @@
   "menuNicknameUpdateFailed": "Failed to update nickname: {error}",
   "@menuNicknameUpdateFailed": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "menuStartPoint": "Start Era: {era}{year}",
   "@menuStartPoint": {
     "placeholders": {
-      "era": {"type": "String"},
-      "year": {"type": "int"}
+      "era": {
+        "type": "String"
+      },
+      "year": {
+        "type": "int"
+      }
     }
   },
   "menuNotLoggedIn": "Not logged in",
@@ -149,35 +185,32 @@
   "artifactDialogDesc": "Would you like to watch a short video to discover an artifact (technology, figure, or historical event) from the current era ({eraLabel})?",
   "@artifactDialogDesc": {
     "placeholders": {
-      "eraLabel": {"type": "String"}
+      "eraLabel": {
+        "type": "String"
+      }
     }
   },
   "artifactDialogNotice": "* Selected at random with equal probability from uncollected artifacts of this era.",
   "artifactDialogCancel": "Cancel",
   "artifactDialogWatchAd": "Discover",
-
   "welcomeTitle": "Welcome to One Million Steps Odyssey!",
   "welcomeHydrationNotice": "Throughout the long journey of human history, proper hydration has always been essential.\nPlease stay hydrated and keep safe while walking outdoors.",
   "welcomeBackgroundTitle": "Automatic Background Sync",
   "welcomeBackgroundNotice": "This app syncs with your health app automatically, so you don't need to keep it open.\nJust walk normally and open the app occasionally to explore new historical eras!",
   "welcomeButtonStart": "Start Journey",
-
   "logoutDialogTitle": "Confirm Log Out",
   "logoutDialogMessage": "Are you sure you want to log out?\n\n* Please note that your steps will NOT be tracked or accumulated while logged out.",
   "logoutConfirmButton": "Log Out",
   "logoutCancelButton": "Cancel",
-
   "notification6kTitle": "👟 6,000 Steps Reached!",
   "notification6kBody": "You've reached your daily goal of 6,000 steps! Your journey through history progresses steadily.",
   "notification10kTitle": "🎉 10,000 Steps Milestone!",
   "notification10kBody": "Amazing! You hit 10,000 steps today, advancing nearly 27 years through human history!",
-
   "milestone6kTitle": "👟 6,000 Steps Milestone!",
   "milestone6kDesc": "You reached 6,000 steps today!\nYou earned an artifact!",
   "milestone10kTitle": "🎉 10,000 Steps Milestone!",
   "milestone10kDesc": "Amazing! You reached 10,000 steps today!\nYou earned an artifact!",
   "milestoneGetArtifact": "Discover",
-
   "hallOfFameTitle": "Hall of Fame",
   "hallOfFameEras": "Eras",
   "hallOfFameArtifacts": "Artifacts",

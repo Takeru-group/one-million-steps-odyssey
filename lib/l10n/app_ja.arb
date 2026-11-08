@@ -15,38 +15,48 @@
   "historyReached": "{name} に到達しました。",
   "@historyReached": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "artifactDiscovered": "{name} を発見しました。",
   "@artifactDiscovered": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "figureMet": "{name} と出会いました。",
   "@figureMet": {
     "placeholders": {
-      "name": {"type": "String"}
+      "name": {
+        "type": "String"
+      }
     }
   },
   "hintHomeTitle": "ホーム画面の旅の進め方",
-  "hintHomeDesc": "あなたが歩いた歩数（1歩＝約1日）に応じて歴史の時間が進みます。\n\n・上部の日付ボタンをタップすると、現在滞在している時代の歴史的背景を読むことができます。\n・時代が進むと背景画像が自動的に変化します。\n・右下の★ボタンからは偉人やアーティファクトを獲得できます。",
+  "hintHomeDesc": "【歩数と歴史の進行】\nあなたが歩いた歩数（1歩＝約1日）に応じて、人類の歴史が古代（紀元前700年代〜）から現代へと進んでいきます。アプリを開いていない間もバックグラウンドで自動同期されます。\n\n【年代と背景グラフィック】\n・上部の日付ボタンをタップすると、現在滞在している年代の歴史的解説や画像タイトルを閲覧できます。\n・歩数が一定数に達するごとに次の年代へ到達し、背景グラフィックが自動的に切り替わります。\n・100年単位の「世紀」を跨ぐ際には特別な世紀突入演出が発生し、節目の世紀ではアプリ内レビュー、その他の世紀ではインタースティシャル広告が表示されます。\n\n【アーティファクトの収集】\n・右下の★ボタン：4時間のクールダウン経過後に動画広告を視聴することで、滞在中の年代にまつわる未獲得のアーティファクト（技術・偉人・歴史的出来事）を1つ獲得できます。\n・日々の歩数マイルストーン：1日に6,000歩、10,000歩に到達することでも、確定でそれぞれアーティファクトを獲得できます。",
   "hintHistoryTitle": "History図鑑の見方",
-  "hintHistoryDesc": "これまで歩みを進めて解放された年代やアーティファクトのコレクションです。\n\n・世紀ごとに折りたたまれて記録されています。\n・タップして展開すると、到達・獲得した日付や詳細メッセージを確認できます。",
+  "hintHistoryDesc": "【コレクションの構造】\n旅の途中で到達した「年代」と、獲得した「アーティファクト」が世紀（Century）ごとにまとめられて記録されています。\n\n【詳細の確認】\n・各世紀のパネルをタップするとアコーディオンが開閉し、一覧が表示されます。\n・アイテムをタップすると、到達日・獲得日、高解像度の画像、および詳細な背景ストーリーを確認できます。\n\n【歴史の殿堂との違い】\n・当タブ「歴史」：現在の周回（ゲームモード）で解放したアイテムが表示されます。\n・サイドメニューの「歴史の殿堂」：これまでのすべての周回を通じて獲得した全アイテムを横断して確認できる完全図鑑です。",
   "tabSteps": "歩数",
   "homeDefaultDescription": "紀元前750年頃、地中海地域ではフェニキア人による海上貿易が活発化し、イタリア半島では古代ローマの萌芽となるエトルリア文化が発展し始めた。ギリシャでは都市国家ポリスの形成が進む黎明期であった。",
   "historyEmptyCurrentRound": "この周回で獲得した歴史はまだありません",
   "historyCenturyBce": "紀元前{century}世紀",
   "@historyCenturyBce": {
     "placeholders": {
-      "century": {"type": "int"}
+      "century": {
+        "type": "int"
+      }
     }
   },
   "historyCenturyCe": "{century}世紀",
   "@historyCenturyCe": {
     "placeholders": {
-      "century": {"type": "int"}
+      "century": {
+        "type": "int"
+      }
     }
   },
   "eraReachedMessage": "{eraLabel}に到達しました",
@@ -70,55 +80,75 @@
   "stepsToday": "今日の歩数 : {steps}歩",
   "@stepsToday": {
     "placeholders": {
-      "steps": {"type": "int"}
+      "steps": {
+        "type": "int"
+      }
     }
   },
   "stepsUpdatedAt": "アップデート: {dateTime}",
   "@stepsUpdatedAt": {
     "placeholders": {
-      "dateTime": {"type": "String"}
+      "dateTime": {
+        "type": "String"
+      }
     }
   },
   "stepsTotal": "総歩数: {steps}歩",
   "@stepsTotal": {
     "placeholders": {
-      "steps": {"type": "int"}
+      "steps": {
+        "type": "int"
+      }
     }
   },
   "stepsStartDate": "アプリ開始日: {date}",
   "@stepsStartDate": {
     "placeholders": {
-      "date": {"type": "String"}
+      "date": {
+        "type": "String"
+      }
     }
   },
   "stepsPast7Days": "過去 7 日間の歩数",
   "stepsChartTooltip": "{steps} 歩",
   "@stepsChartTooltip": {
     "placeholders": {
-      "steps": {"type": "int"}
+      "steps": {
+        "type": "int"
+      }
     }
   },
-  "hintStepsTitle": "歩数データの見方",
-  "hintStepsDesc": "本日の歩数やこれまでの累計歩数、および過去7日間の歩数推移を確認できます。\n\n・グラフの棒をタップすると詳細な歩数が表示されます。",
+  "hintStepsTitle": "歩数データと特典",
+  "hintStepsDesc": "【歩数計測の仕様】\n端末のヘルスケア機能（iOS HealthKit / Android Activity Recognition）と連携し、本日および過去の歩数をリアルタイムに取得・記録しています。\n\n【歩数概要と推移】\n・「本日の歩数」および初回登録からの「累計歩数」が上部に表示されます。\n・下部の棒グラフでは過去7日間の推移を確認でき、各バーをタップすると日別の歩数詳細がポップアップします。\n\n【歩数マイルストーン報酬】\n・6,000歩達成：日々のウォーキング目標到達として、確定アーティファクトを1個獲得できます。\n・10,000歩達成：1万日（約27年分）の歴史を駆け抜けた証として、さらにもう1個の確定アーティファクトを獲得できます。\n※一度に10,000歩を超えて同期された場合でも、6,000歩報酬→10,000歩報酬の順に連続して獲得できます。",
   "historyReachedEra": "{eraLabel}年代に到達しました",
-
   "dateBceFormat": "紀元前{year}年{month}月{day}日",
   "@dateBceFormat": {
     "placeholders": {
-      "year": {"type": "int"},
-      "month": {"type": "int"},
-      "day": {"type": "int"}
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
   "dateCeFormat": "西暦{year}年{month}月{day}日",
   "@dateCeFormat": {
     "placeholders": {
-      "year": {"type": "int"},
-      "month": {"type": "int"},
-      "day": {"type": "int"}
+      "year": {
+        "type": "int"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
-
   "menuChangeNicknameTitle": "ニックネームの変更",
   "menuChangeNicknameHint": "新しいニックネームを入力",
   "menuCancel": "キャンセル",
@@ -127,14 +157,20 @@
   "menuNicknameUpdateFailed": "更新に失敗しました: {error}",
   "@menuNicknameUpdateFailed": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "menuStartPoint": "開始地点: {era}{year}年",
   "@menuStartPoint": {
     "placeholders": {
-      "era": {"type": "String"},
-      "year": {"type": "int"}
+      "era": {
+        "type": "String"
+      },
+      "year": {
+        "type": "int"
+      }
     }
   },
   "menuNotLoggedIn": "未ログイン",
@@ -149,35 +185,32 @@
   "artifactDialogDesc": "短い動画を見て現在の年代（{eraLabel}）のアーティファクト（技術・偉人・歴史的出来事）を獲得しますか？",
   "@artifactDialogDesc": {
     "placeholders": {
-      "eraLabel": {"type": "String"}
+      "eraLabel": {
+        "type": "String"
+      }
     }
   },
   "artifactDialogNotice": "※ この時代の未獲得アーティファクトから均等な確率で選ばれます。",
   "artifactDialogCancel": "キャンセル",
   "artifactDialogWatchAd": "獲得",
-
   "welcomeTitle": "100万歩の歴史旅へようこそ！",
   "welcomeHydrationNotice": "人類の長い歴史の旅には、常にこまめな水分補給が不可欠でした。\n屋外でウォーキングを楽しむ際は、しっかりと水分を補給し、安全に気をつけて旅をお楽しみください。",
   "welcomeBackgroundTitle": "自動バックグラウンド連携",
   "welcomeBackgroundNotice": "本アプリはヘルスケア機能と自動連携するため、常にアプリを開いておく必要はありません。\n普段通り生活し、時々アプリを開くことで次の時代への到達や新しい歴史の発見が楽しめます！",
   "welcomeButtonStart": "旅を始める",
-
   "logoutDialogTitle": "ログアウトの確認",
   "logoutDialogMessage": "本当にログアウトしますか？\n\n※ ログアウト期間中は歩数がカウント・加算されませんのでご注意ください。",
   "logoutConfirmButton": "ログアウト",
   "logoutCancelButton": "キャンセル",
-
   "notification6kTitle": "👟 6,000歩達成！",
   "notification6kBody": "本日の目標6,000歩を達成しました！歴史の旅が着実に進んでいます。",
   "notification10kTitle": "🎉 10,000歩大達成！",
   "notification10kBody": "素晴らしい！10,000歩に到達しました！1万日分の歴史を駆け抜けました！",
-
   "milestone6kTitle": "👟 6,000歩達成！",
   "milestone6kDesc": "本日6,000歩に到達しました！\nアーティファクトを獲得できます！",
   "milestone10kTitle": "🎉 10,000歩達成！",
   "milestone10kDesc": "素晴らしい！本日10,000歩に到達しました！\nアーティファクトを獲得できます！",
   "milestoneGetArtifact": "獲得する",
-
   "hallOfFameTitle": "歴史の殿堂",
   "hallOfFameEras": "年代",
   "hallOfFameArtifacts": "アーティファクト",
