@@ -450,8 +450,17 @@ class UserRepository {
       'rarity': artifactMaster.rarity,
     };
 
+    final newScheduledDeletionAt = DateTime(
+      now.year + 1,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute,
+      now.second,
+    );
     final updates = <String, dynamic>{
       'unlockedArtifacts.$artifactId': artifactData,
+      'scheduledDeletionAt': Timestamp.fromDate(newScheduledDeletionAt),
     };
 
     if (isFromAd) {
