@@ -257,4 +257,130 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get hallOfFameEmpty => '獲得したアイテムはありません';
+
+  @override
+  String menuRoundCount(int count) {
+    return '周回数: $count周目';
+  }
+
+  @override
+  String menuStartDate(String date) {
+    return '開始日: $date';
+  }
+
+  @override
+  String get menuInquiry => 'お問い合わせ';
+
+  @override
+  String get menuTermsOfService => '利用規約';
+
+  @override
+  String get menuPrivacyPolicy => 'プライバシーポリシー';
+
+  @override
+  String get menuOssLicenses => 'オープンソースライセンス';
+
+  @override
+  String get menuDeleteAccount => 'アカウントを削除';
+
+  @override
+  String get deleteAccountDialogTitle => 'アカウントの削除';
+
+  @override
+  String get deleteAccountDialogMessage =>
+      'アカウントを削除すると、これまでの歩数、獲得した年代、アーティファクトのデータはすべて完全に消去され、復旧できません。\n\n続行するには、下に「delete」と入力してください。';
+
+  @override
+  String get deleteAccountConfirmButton => '削除する';
+
+  @override
+  String deleteAccountFailed(String error) {
+    return 'アカウント削除に失敗しました（再ログインが必要な場合があります）: $error';
+  }
+
+  @override
+  String logoutFailed(String error) {
+    return 'ログアウトに失敗しました: $error';
+  }
+
+  @override
+  String get urlOpenFailed => 'ページを開けませんでした';
+
+  @override
+  String get artifactRewardTitle => 'アーティファクト獲得！';
+
+  @override
+  String get btnClose => '閉じる';
+
+  @override
+  String centuryEnteredTitle(String century) {
+    return '$centuryに突入しました！';
+  }
+
+  @override
+  String get eraEnteredTitle => '次の年代に入りました！';
+
+  @override
+  String centuryEnteredDesc(String eraLabel, String century) {
+    return '新しい時代「$eraLabel年代」に到達し、$centuryに突入しました！\n背景と歴史情報が更新されます。';
+  }
+
+  @override
+  String eraEnteredDesc(String eraLabel) {
+    return '新しい時代「$eraLabel年代」に到達しました！\n背景と歴史情報が更新されます。';
+  }
+
+  @override
+  String get btnContinueJourney => '旅を続ける';
+
+  @override
+  String get endingAchievedTitle => '100万歩達成おめでとうございます！';
+
+  @override
+  String get endingAchievedDesc =>
+      '約2,700年にわたる人類の歴史を歩みきり、ついに現代へ追いつきました。\n\n新しい冒険を始めますか？';
+
+  @override
+  String get btnLater => 'あとで';
+
+  @override
+  String get btnStart => '始める';
+
+  @override
+  String get endingMainTitle => '100万歩の旅 完結';
+
+  @override
+  String get endingSubtitle => 'あなたが歩んだ100万日・2,700年の軌跡';
+
+  @override
+  String get endingEmptyFallback => '長い歴史の旅を経て、現代へと到達しました。';
+
+  @override
+  String get endingFinaleTitle => 'Thank you for walking.';
+
+  @override
+  String get endingFinaleSubtitle => 'あなたの確かな一歩一歩が、壮大な歴史を紡ぎました。';
+
+  @override
+  String get endingFastForward => '早送り中';
+
+  @override
+  String get endingSkip => 'スキップ';
+
+  @override
+  String get artifactAllCollected => 'この世紀のアーティファクトはすべて獲得済みです！';
+
+  @override
+  String get hintTooltip => 'ヒントを見る';
+
+  @override
+  String get adNotReady => '広告の準備ができていません';
+
+  @override
+  String get legalLoadFailed => 'ドキュメントの読み込みに失敗しました。';
+
+  @override
+  String hallOfFameCenturyCe(int century) {
+    return '西暦 $century 世紀';
+  }
 }

@@ -54,9 +54,8 @@ class UserRepository {
       now.second,
     );
 
-    final rawEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
-    final initialEraKey = buildEraStorageKey(rawEraKey, nextGameMode);
-    final initialMaster = await _masterDataRepository.getHistoryMaster(rawEraKey);
+    final initialEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
+    final initialMaster = await _masterDataRepository.getHistoryMaster(initialEraKey);
 
     final initialEras = <String, Map<String, dynamic>>{
       initialEraKey: {
@@ -485,8 +484,9 @@ class UserRepository {
       now.second,
     );
 
-    final initialEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
-    final initialMaster = await _masterDataRepository.getHistoryMaster(initialEraKey);
+    final rawEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
+    final initialEraKey = buildEraStorageKey(rawEraKey, nextGameMode);
+    final initialMaster = await _masterDataRepository.getHistoryMaster(rawEraKey);
 
     final eraData = {
       'unlockedAt': Timestamp.fromDate(now),

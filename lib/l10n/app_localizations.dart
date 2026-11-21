@@ -523,6 +523,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No collected items yet'**
   String get hallOfFameEmpty;
+
+  /// No description provided for @menuRoundCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Round: {count}'**
+  String menuRoundCount(int count);
+
+  /// No description provided for @menuStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Started: {date}'**
+  String menuStartDate(String date);
+
+  /// No description provided for @menuInquiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get menuInquiry;
+
+  /// No description provided for @menuTermsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get menuTermsOfService;
+
+  /// No description provided for @menuPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get menuPrivacyPolicy;
+
+  /// No description provided for @menuOssLicenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Source Licenses'**
+  String get menuOssLicenses;
+
+  /// No description provided for @menuDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get menuDeleteAccount;
+
+  /// No description provided for @deleteAccountDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountDialogTitle;
+
+  /// No description provided for @deleteAccountDialogMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting your account will permanently erase all your step history, unlocked eras, and collected artifacts. This action cannot be undone.\n\nTo continue, please type \"delete\" below.'**
+  String get deleteAccountDialogMessage;
+
+  /// No description provided for @deleteAccountConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deleteAccountConfirmButton;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete account (re-authentication may be required): {error}'**
+  String deleteAccountFailed(String error);
+
+  /// No description provided for @logoutFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to log out: {error}'**
+  String logoutFailed(String error);
+
+  /// No description provided for @urlOpenFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the page.'**
+  String get urlOpenFailed;
+
+  /// No description provided for @artifactRewardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Artifact Discovered!'**
+  String get artifactRewardTitle;
+
+  /// No description provided for @btnClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get btnClose;
+
+  /// No description provided for @centuryEnteredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entered the {century}!'**
+  String centuryEnteredTitle(String century);
+
+  /// No description provided for @eraEnteredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Entered a New Era!'**
+  String get eraEnteredTitle;
+
+  /// No description provided for @centuryEnteredDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You have reached a new era ({eraLabel}s) and entered the {century}!\nBackground scenery and historical info have been updated.'**
+  String centuryEnteredDesc(String eraLabel, String century);
+
+  /// No description provided for @eraEnteredDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You have reached a new era ({eraLabel}s)!\nBackground scenery and historical info have been updated.'**
+  String eraEnteredDesc(String eraLabel);
+
+  /// No description provided for @btnContinueJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Journey'**
+  String get btnContinueJourney;
+
+  /// No description provided for @endingAchievedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'1,000,000 Steps Achieved!'**
+  String get endingAchievedTitle;
+
+  /// No description provided for @endingAchievedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'You have walked through 2,700 years of human history and reached the present day.\n\nWould you like to start a new adventure?'**
+  String get endingAchievedDesc;
+
+  /// No description provided for @btnLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get btnLater;
+
+  /// No description provided for @btnStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get btnStart;
+
+  /// No description provided for @endingMainTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ONE MILLION STEPS ODYSSEY'**
+  String get endingMainTitle;
+
+  /// No description provided for @endingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A Chronicle of Your 1,000,000 Steps'**
+  String get endingSubtitle;
+
+  /// No description provided for @endingEmptyFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Your journey has reached the modern era.'**
+  String get endingEmptyFallback;
+
+  /// No description provided for @endingFinaleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'THANK YOU FOR WALKING'**
+  String get endingFinaleTitle;
+
+  /// No description provided for @endingFinaleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Every step you took carved a new page in history.'**
+  String get endingFinaleSubtitle;
+
+  /// No description provided for @endingFastForward.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast Forward'**
+  String get endingFastForward;
+
+  /// No description provided for @endingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get endingSkip;
+
+  /// No description provided for @artifactAllCollected.
+  ///
+  /// In en, this message translates to:
+  /// **'You have already collected all artifacts from this century!'**
+  String get artifactAllCollected;
+
+  /// No description provided for @hintTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'View Hint'**
+  String get hintTooltip;
+
+  /// No description provided for @adNotReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad is not ready yet.'**
+  String get adNotReady;
+
+  /// No description provided for @legalLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load document.'**
+  String get legalLoadFailed;
+
+  /// No description provided for @hallOfFameCenturyCe.
+  ///
+  /// In en, this message translates to:
+  /// **'{century}th Century'**
+  String hallOfFameCenturyCe(int century);
 }
 
 class _AppLocalizationsDelegate

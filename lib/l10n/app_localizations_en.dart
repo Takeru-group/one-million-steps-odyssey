@@ -263,4 +263,132 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hallOfFameEmpty => 'No collected items yet';
+
+  @override
+  String menuRoundCount(int count) {
+    return 'Round: $count';
+  }
+
+  @override
+  String menuStartDate(String date) {
+    return 'Started: $date';
+  }
+
+  @override
+  String get menuInquiry => 'Contact Us';
+
+  @override
+  String get menuTermsOfService => 'Terms of Service';
+
+  @override
+  String get menuPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get menuOssLicenses => 'Open Source Licenses';
+
+  @override
+  String get menuDeleteAccount => 'Delete Account';
+
+  @override
+  String get deleteAccountDialogTitle => 'Delete Account';
+
+  @override
+  String get deleteAccountDialogMessage =>
+      'Deleting your account will permanently erase all your step history, unlocked eras, and collected artifacts. This action cannot be undone.\n\nTo continue, please type \"delete\" below.';
+
+  @override
+  String get deleteAccountConfirmButton => 'Delete';
+
+  @override
+  String deleteAccountFailed(String error) {
+    return 'Failed to delete account (re-authentication may be required): $error';
+  }
+
+  @override
+  String logoutFailed(String error) {
+    return 'Failed to log out: $error';
+  }
+
+  @override
+  String get urlOpenFailed => 'Could not open the page.';
+
+  @override
+  String get artifactRewardTitle => 'Artifact Discovered!';
+
+  @override
+  String get btnClose => 'Close';
+
+  @override
+  String centuryEnteredTitle(String century) {
+    return 'Entered the $century!';
+  }
+
+  @override
+  String get eraEnteredTitle => 'Entered a New Era!';
+
+  @override
+  String centuryEnteredDesc(String eraLabel, String century) {
+    return 'You have reached a new era (${eraLabel}s) and entered the $century!\nBackground scenery and historical info have been updated.';
+  }
+
+  @override
+  String eraEnteredDesc(String eraLabel) {
+    return 'You have reached a new era (${eraLabel}s)!\nBackground scenery and historical info have been updated.';
+  }
+
+  @override
+  String get btnContinueJourney => 'Continue Journey';
+
+  @override
+  String get endingAchievedTitle => '1,000,000 Steps Achieved!';
+
+  @override
+  String get endingAchievedDesc =>
+      'You have walked through 2,700 years of human history and reached the present day.\n\nWould you like to start a new adventure?';
+
+  @override
+  String get btnLater => 'Later';
+
+  @override
+  String get btnStart => 'Start';
+
+  @override
+  String get endingMainTitle => 'ONE MILLION STEPS ODYSSEY';
+
+  @override
+  String get endingSubtitle => 'A Chronicle of Your 1,000,000 Steps';
+
+  @override
+  String get endingEmptyFallback => 'Your journey has reached the modern era.';
+
+  @override
+  String get endingFinaleTitle => 'THANK YOU FOR WALKING';
+
+  @override
+  String get endingFinaleSubtitle =>
+      'Every step you took carved a new page in history.';
+
+  @override
+  String get endingFastForward => 'Fast Forward';
+
+  @override
+  String get endingSkip => 'Skip';
+
+  @override
+  String get artifactAllCollected =>
+      'You have already collected all artifacts from this century!';
+
+  @override
+  String get hintTooltip => 'View Hint';
+
+  @override
+  String get adNotReady => 'Ad is not ready yet.';
+
+  @override
+  String get legalLoadFailed => 'Failed to load document.';
+
+  @override
+  String hallOfFameCenturyCe(int century) {
+    return '${century}th Century';
+  }
 }
