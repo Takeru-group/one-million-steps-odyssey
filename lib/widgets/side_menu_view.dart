@@ -51,6 +51,7 @@ class _SideMenuViewState extends State<SideMenuView> {
 
   Future<void> _showEditDisplayNameDialog(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     final controller = TextEditingController(text: _displayName);
     final newName = await showDialog<String>(
       context: context,
@@ -86,13 +87,13 @@ class _SideMenuViewState extends State<SideMenuView> {
           _displayName = newName;
         });
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          scaffoldMessenger.showSnackBar(
             SnackBar(content: Text(l10n.menuNicknameUpdated)),
           );
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          scaffoldMessenger.showSnackBar(
             SnackBar(content: Text(l10n.menuNicknameUpdateFailed(e.toString()))),
           );
         }
@@ -186,7 +187,7 @@ class _SideMenuViewState extends State<SideMenuView> {
     );
 
     if (shouldLogout != true) return;
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     showDialog(
       context: context,
@@ -317,7 +318,7 @@ class _SideMenuViewState extends State<SideMenuView> {
     );
 
     if (confirmed != true) return;
-    if (!mounted) return;
+    if (!context.mounted) return;
 
     showDialog(
       context: context,
@@ -555,9 +556,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                     style: TextStyle(color: subTextColor, fontSize: 12),
                   ),
                 ),
-                RadioListTile<String>(
-                  title: Text('日本語', style: TextStyle(color: textColor)),
-                  value: 'ja',
+                RadioGroup<String>(
                   groupValue: currentLocale.languageCode,
                   onChanged: (value) {
                     if (value != null) {
@@ -566,18 +565,18 @@ class _SideMenuViewState extends State<SideMenuView> {
                       });
                     }
                   },
-                ),
-                RadioListTile<String>(
-                  title: Text('English', style: TextStyle(color: textColor)),
-                  value: 'en',
-                  groupValue: currentLocale.languageCode,
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() {
-                        localeNotifier.value = Locale(value);
-                      });
-                    }
-                  },
+                  child: Column(
+                    children: [
+                      RadioListTile<String>(
+                        title: Text('日本語', style: TextStyle(color: textColor)),
+                        value: 'ja',
+                      ),
+                      RadioListTile<String>(
+                        title: Text('English', style: TextStyle(color: textColor)),
+                        value: 'en',
+                      ),
+                    ],
+                  ),
                 ),
                 Divider(color: borderColor),
 

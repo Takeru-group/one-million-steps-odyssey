@@ -16,7 +16,7 @@ class AppDateResult {
   });
 
   /// 表示用フォーマット (例: "紀元前713年9月13日")
-  String toJapaneseString() => '$era${year}年$month月$day日';
+  String toJapaneseString() => '$era$year年$month月$day日';
 
   /// 🌐 多言語（l10n）対応の表示フォーマット
   String toLocalizedFormattedString(BuildContext context) {

@@ -57,11 +57,11 @@ class StepsView extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final cardBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.40)
-        : Colors.white.withOpacity(0.40);
+        ? Colors.black.withValues(alpha: 0.40)
+        : Colors.white.withValues(alpha: 0.40);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.15)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.15)
+        : Colors.white.withValues(alpha: 0.50);
     final primaryTextColor = isDarkMode ? Colors.white : Colors.black87;
     final subTextColor = isDarkMode ? Colors.white70 : Colors.black54;
 
@@ -198,7 +198,7 @@ class StepsView extends StatelessWidget {
                                 barTouchData: BarTouchData(
                                   touchTooltipData: BarTouchTooltipData(
                                     getTooltipColor: (_) => Colors.deepPurple
-                                        .withOpacity(0.85),
+                                        .withValues(alpha: 0.85),
                                     getTooltipItem:
                                         (group, groupIndex, rod, rodIndex) {
                                       return BarTooltipItem(

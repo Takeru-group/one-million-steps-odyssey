@@ -12,11 +12,11 @@ class AppDialogs {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final dialogBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.80)
-        : Colors.white.withOpacity(0.90);
+        ? Colors.black.withValues(alpha: 0.80)
+        : Colors.white.withValues(alpha: 0.90);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.20)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final subTextColor = isDarkMode ? Colors.white70 : Colors.black54;
 
@@ -61,8 +61,8 @@ class AppDialogs {
                       child: Image.asset(
                         'assets/images/mainback1.jpeg',
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(
-                          color: Colors.grey.withOpacity(0.3),
+                        errorBuilder: (_, _, _) => Container(
+                          color: Colors.grey.withValues(alpha: 0.3),
                           child: const Icon(Icons.local_drink,
                               size: 48, color: Colors.amber),
                         ),
@@ -83,8 +83,8 @@ class AppDialogs {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isDarkMode
-                          ? Colors.white.withOpacity(0.08)
-                          : Colors.black.withOpacity(0.04),
+                          ? Colors.white.withValues(alpha: 0.08)
+                          : Colors.black.withValues(alpha: 0.04),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -153,11 +153,11 @@ class AppDialogs {
     final langCode = Localizations.localeOf(context).languageCode;
 
     final dialogBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.75)
-        : Colors.white.withOpacity(0.85);
+        ? Colors.black.withValues(alpha: 0.75)
+        : Colors.white.withValues(alpha: 0.85);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.20)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final subTextColor = isDarkMode ? Colors.white70 : Colors.black54;
 
@@ -207,19 +207,19 @@ class AppDialogs {
                           ? CachedNetworkImage(
                               imageUrl: imagePath,
                               fit: BoxFit.cover,
-                              placeholder: (_, __) => Container(
-                                color: Colors.grey.withOpacity(0.3),
+                              placeholder: (_, _) => Container(
+                                color: Colors.grey.withValues(alpha: 0.3),
                                 child: const Center(
                                     child: CircularProgressIndicator()),
                               ),
-                              errorWidget: (_, __, ___) => Container(
-                                color: Colors.grey.withOpacity(0.3),
+                              errorWidget: (_, _, _) => Container(
+                                color: Colors.grey.withValues(alpha: 0.3),
                                 child: Icon(Icons.museum,
                                     size: 48, color: textColor),
                               ),
                             )
                           : Container(
-                              color: Colors.grey.withOpacity(0.3),
+                              color: Colors.grey.withValues(alpha: 0.3),
                               child: Icon(Icons.museum,
                                   size: 48, color: textColor),
                             ),
@@ -234,7 +234,7 @@ class AppDialogs {
                           : '※ この画像は生成AIにより作成されています',
                       style: TextStyle(
                         fontSize: 10,
-                        color: subTextColor.withOpacity(0.7),
+                        color: subTextColor.withValues(alpha: 0.7),
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -298,11 +298,11 @@ class AppDialogs {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final dialogBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.70)
-        : Colors.white.withOpacity(0.80);
+        ? Colors.black.withValues(alpha: 0.70)
+        : Colors.white.withValues(alpha: 0.80);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.20)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
     final subTextColor = isDarkMode ? Colors.white70 : Colors.black54;
 
@@ -418,11 +418,11 @@ class AppDialogs {
 
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final dialogBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.80)
-        : Colors.white.withOpacity(0.90);
+        ? Colors.black.withValues(alpha: 0.80)
+        : Colors.white.withValues(alpha: 0.90);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.20)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
 
     await showDialog(
@@ -460,8 +460,8 @@ class AppDialogs {
           ),
           content: Text(
             newCentury != null
-                ? '新しい時代「${eraLabel}年代」に到達し、$centuryTextに突入しました！\n背景と歴史情報が更新されます。'
-                : '新しい時代「${eraLabel}年代」に到達しました！\n背景と歴史情報が更新されます。',
+                ? '新しい時代「$eraLabel年代」に到達し、$centuryTextに突入しました！\n背景と歴史情報が更新されます。'
+                : '新しい時代「$eraLabel年代」に到達しました！\n背景と歴史情報が更新されます。',
             style: TextStyle(color: textColor, fontSize: 14, height: 1.5),
           ),
           actions: [
@@ -484,11 +484,11 @@ class AppDialogs {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final dialogBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.80)
-        : Colors.white.withOpacity(0.90);
+        ? Colors.black.withValues(alpha: 0.80)
+        : Colors.white.withValues(alpha: 0.90);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.20)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
 
     await showDialog<void>(

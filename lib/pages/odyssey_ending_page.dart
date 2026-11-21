@@ -331,7 +331,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
-                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
                     )
                   : const SizedBox.shrink(),
             ),

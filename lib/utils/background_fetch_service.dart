@@ -1,14 +1,11 @@
 import 'package:background_fetch/background_fetch.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:health/health.dart';
 import 'step_notification_service.dart'; // 👈 このインポートを追加
 
 class BackgroundFetchService {
   static final Health _health = Health();
-  static final FlutterLocalNotificationsPlugin _notifications =
-      FlutterLocalNotificationsPlugin();
 
   /// 初期化と設定
   static Future<void> initialize() async {
@@ -76,34 +73,6 @@ class BackgroundFetchService {
   }
 
   /// ローカル通知の発行
-  static Future<void> _showAchievementNotification(int steps) async {
-    const androidDetails = AndroidNotificationDetails(
-      'step_achievement_channel',
-      'Step Achievements',
-      channelDescription: 'Notifications for daily step achievements',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
-
-    const iosDetails = DarwinNotificationDetails(
-      presentSound: true,
-      presentAlert: true,
-      presentBadge: true,
-    );
-
-    const details = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-
-    await _notifications.show(
-      id: 999,
-      title: '🎉 今日の目標達成！',
-      body: '本日の歩数が $steps 歩に達しました！オデッセイの旅を進めましょう！',
-      notificationDetails: details,
-    );
-  }
-
   static Future<void> stop() async {
     if (kIsWeb) return;
     try {

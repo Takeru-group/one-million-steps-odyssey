@@ -39,11 +39,11 @@ class _InitialPageState extends State<InitialPage> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     final dialogBgColor = isDarkMode
-        ? Colors.black.withOpacity(0.70)
-        : Colors.white.withOpacity(0.80);
+        ? Colors.black.withValues(alpha: 0.70)
+        : Colors.white.withValues(alpha: 0.80);
     final borderColor = isDarkMode
-        ? Colors.white.withOpacity(0.20)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
     final textColor = isDarkMode ? Colors.white : Colors.black87;
 
     showDialog(
@@ -265,7 +265,7 @@ class _InitialPageState extends State<InitialPage> {
                                 : Theme.of(context)
                                     .colorScheme
                                     .onSurface
-                                    .withOpacity(0.3),
+                                    .withValues(alpha: 0.3),
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
@@ -354,8 +354,8 @@ class _AnimatedBackgroundPageState extends State<AnimatedBackgroundPage>
   @override
   Widget build(BuildContext context) {
     final overlayColor = widget.isDarkMode
-        ? Colors.black.withOpacity(0.50)
-        : Colors.white.withOpacity(0.50);
+        ? Colors.black.withValues(alpha: 0.50)
+        : Colors.white.withValues(alpha: 0.50);
 
     return LayoutBuilder(
       builder: (context, constraints) {

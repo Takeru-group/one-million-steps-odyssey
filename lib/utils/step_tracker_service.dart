@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:health/health.dart';
 import 'step_notification_service.dart';
 
+
 class StepTrackerService {
   static final Health _health = Health();
   static final FlutterLocalNotificationsPlugin _notifications =

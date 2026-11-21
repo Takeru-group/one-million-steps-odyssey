@@ -159,8 +159,11 @@ class UserRepository {
       final map = entry.value;
 
       final hasYearLabelJp = map['yearLabelJp'] != null && (map['yearLabelJp'] as String).isNotEmpty;
-      if (!hasYearLabelJp) {
-        missingEraKeys[key] = map;
+      final hasImageTitle = (map['imageTitleJp'] != null && (map['imageTitleJp'] as String).isNotEmpty) ||
+                            (map['imageTitleEn'] != null && (map['imageTitleEn'] as String).isNotEmpty);
+
+      if (!hasYearLabelJp || !hasImageTitle) {
+        missingEraKeys[key] = Map<String, dynamic>.from(map);
       }
 
       unlockedHistories[key] = HistoryMasterModel(
@@ -186,7 +189,7 @@ class UserRepository {
 
       final hasNameJa = map['nameJa'] != null && (map['nameJa'] as String).isNotEmpty;
       if (!hasNameJa) {
-        missingArtifactKeys[key] = map;
+        missingArtifactKeys[key] = Map<String, dynamic>.from(map);
       }
 
       unlockedArtifacts[key] = ArtifactModel(
@@ -240,6 +243,8 @@ class UserRepository {
           final existingMap = missingEraKeys[eraKey] ?? {};
           existingMap['yearLabelJp'] = master.yearLabelJp;
           existingMap['yearLabelEn'] = master.yearLabelEn;
+          existingMap['imageTitleJp'] = master.imageTitleJp;
+          existingMap['imageTitleEn'] = master.imageTitleEn;
           existingMap['backgroundImagePath'] = master.backgroundImagePath;
           existingMap['thumbnailPath'] = master.thumbnailPath;
           existingMap['descriptionJp'] = master.descriptionJp;
@@ -277,6 +282,37 @@ class UserRepository {
         await _firestore.collection('user').doc(userId).update(updates);
       } catch (_) {}
     }
+  }
+
+  static final Set<String> _repairedEraKeys = {};
+
+  /// 🌟 特定の年代の欠損メタデータ（主に画像タイトル）をマスターから取得してFirestoreに保存
+  Future<HistoryMasterModel?> fetchAndRepairEraMetadata({
+    required String userId,
+    required String eraKey,
+  }) async {
+    try {
+      final master = await _masterDataRepository.getHistoryMaster(eraKey);
+      if (master == null) return null;
+
+      final cacheKey = '$userId:$eraKey';
+      if (!_repairedEraKeys.contains(cacheKey)) {
+        _repairedEraKeys.add(cacheKey);
+        // バックグラウンドで非同期更新（UIのスレッドをブロックしない）
+        _firestore.collection('user').doc(userId).update({
+          'unlockedEras.$eraKey.imageTitleJp': master.imageTitleJp,
+          'unlockedEras.$eraKey.imageTitleEn': master.imageTitleEn,
+          if (master.yearLabelJp.isNotEmpty) 'unlockedEras.$eraKey.yearLabelJp': master.yearLabelJp,
+          if (master.yearLabelEn.isNotEmpty) 'unlockedEras.$eraKey.yearLabelEn': master.yearLabelEn,
+          if (master.descriptionJp.isNotEmpty) 'unlockedEras.$eraKey.descriptionJp': master.descriptionJp,
+          if (master.descriptionEn.isNotEmpty) 'unlockedEras.$eraKey.descriptionEn': master.descriptionEn,
+        }).timeout(const Duration(seconds: 3)).catchError((_) {});
+      }
+      return master;
+    } catch (e) {
+      print('⚠️ [UserRepository] fetchAndRepairEraMetadata エラー: $e');
+    }
+    return null;
   }
 
   Future<UserDetailedData> updateUserEraProgress({

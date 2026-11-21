@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -55,7 +54,15 @@ class MasterDataRepository {
     } catch (_) {}
   }
 
+  static final Map<String, HistoryMasterModel> _historyMasterMemoryCache = {};
+  static final Map<String, ArtifactModel> _artifactMemoryCache = {};
+
   Future<HistoryMasterModel?> getHistoryMaster(String historyId) async {
+    if (historyId.isEmpty) return null;
+    if (_historyMasterMemoryCache.containsKey(historyId)) {
+      return _historyMasterMemoryCache[historyId];
+    }
+
     DocumentSnapshot<Map<String, dynamic>> docSnap;
     try {
       docSnap = await _firestore.collection('history_master').doc(historyId).get().timeout(const Duration(seconds: 2));
@@ -72,10 +79,17 @@ class MasterDataRepository {
     data['thumbnailPath'] =
         await resolveImageUrl(data['thumbnailPath'] as String? ?? '');
 
-    return HistoryMasterModel.fromDocument(historyId, data);
+    final model = HistoryMasterModel.fromDocument(historyId, data);
+    _historyMasterMemoryCache[historyId] = model;
+    return model;
   }
 
   Future<ArtifactModel?> getArtifact(String artifactId) async {
+    if (artifactId.isEmpty) return null;
+    if (_artifactMemoryCache.containsKey(artifactId)) {
+      return _artifactMemoryCache[artifactId];
+    }
+
     DocumentSnapshot<Map<String, dynamic>> docSnap;
     try {
       docSnap = await _firestore.collection('artifacts').doc(artifactId).get().timeout(const Duration(seconds: 2));
@@ -92,6 +106,8 @@ class MasterDataRepository {
     data['thumbnailPath'] =
         await resolveImageUrl(data['thumbnailPath'] as String? ?? '');
 
-    return ArtifactModel.fromDocument(artifactId, data);
+    final model = ArtifactModel.fromDocument(artifactId, data);
+    _artifactMemoryCache[artifactId] = model;
+    return model;
   }
 }

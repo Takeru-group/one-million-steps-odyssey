@@ -39,8 +39,8 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
   @override
   Widget build(BuildContext context) {
     final overlayColor = widget.isDarkMode
-        ? Colors.black.withOpacity(0.40)
-        : Colors.white.withOpacity(0.30);
+        ? Colors.black.withValues(alpha: 0.40)
+        : Colors.white.withValues(alpha: 0.30);
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -65,7 +65,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
                       ? CachedNetworkImage(
                           imageUrl: widget.imageUrl!,
                           fit: BoxFit.cover,
-                          errorWidget: (_, __, ___) => _buildLocalImage(),
+                          errorWidget: (_, _, _) => _buildLocalImage(),
                         )
                       : _buildLocalImage(),
                 );

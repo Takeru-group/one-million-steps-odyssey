@@ -658,8 +658,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                     filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                     child: Material(
                       color: isDarkMode
-                          ? Colors.purple.withOpacity(0.40)
-                          : Colors.white.withOpacity(0.50),
+                          ? Colors.purple.withValues(alpha: 0.40)
+                          : Colors.white.withValues(alpha: 0.50),
                       shape: const CircleBorder(),
                       child: InkWell(
                         customBorder: const CircleBorder(),
@@ -671,8 +671,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: isDarkMode
-                                  ? Colors.white.withOpacity(0.20)
-                                  : Colors.white.withOpacity(0.60),
+                                  ? Colors.white.withValues(alpha: 0.20)
+                                  : Colors.white.withValues(alpha: 0.60),
                             ),
                           ),
                           child: Icon(
@@ -697,16 +697,16 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   Widget _buildSegmentedControl(BuildContext context, AppLocalizations l10n) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final activeBgColor = isDarkMode
-        ? Colors.purpleAccent.withOpacity(0.35)
-        : Theme.of(context).colorScheme.primaryContainer.withOpacity(0.85);
+        ? Colors.purpleAccent.withValues(alpha: 0.35)
+        : Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.85);
 
     return Container(
       width: 320,
       height: 42,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.40),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.40),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
