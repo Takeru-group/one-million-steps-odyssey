@@ -170,14 +170,31 @@ class StepsView extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    SizedBox(
-                      height: 240,
-                      child: pastWeeklySteps.isEmpty
+                    Builder(
+                      builder: (context) {
+                        int maxStep = 0;
+                        for (final item in pastWeeklySteps) {
+                          final s = (item['steps'] as num?)?.toInt() ?? 0;
+                          if (s > maxStep) maxStep = s;
+                        }
+                        double dynamicMaxY = 15000;
+                        if (maxStep > 12000) {
+                          final padded = (maxStep * 1.2).ceil();
+                          final unit = padded > 25000 ? 10000 : 5000;
+                          dynamicMaxY = (((padded + unit - 1) ~/ unit) * unit).toDouble();
+                        }
+                        final double yInterval = dynamicMaxY <= 15000
+                            ? 5000
+                            : (dynamicMaxY <= 30000 ? 10000 : (dynamicMaxY / 4).ceilToDouble());
+
+                        return SizedBox(
+                          height: 240,
+                          child: pastWeeklySteps.isEmpty
                           ? const SizedBox.shrink()
                           : BarChart(
                               BarChartData(
                                 alignment: BarChartAlignment.spaceAround,
-                                maxY: 15000,
+                                maxY: dynamicMaxY,
                                 barTouchData: BarTouchData(
                                   touchTooltipData: BarTouchTooltipData(
                                     getTooltipColor: (_) => Colors.deepPurple
@@ -205,9 +222,10 @@ class StepsView extends StatelessWidget {
                                   leftTitles: AxisTitles(
                                     sideTitles: SideTitles(
                                       showTitles: true,
-                                      reservedSize: 40,
+                                      reservedSize: 42,
+                                      interval: yInterval,
                                       getTitlesWidget: (value, meta) {
-                                        if (value % 5000 == 0) {
+                                        if (value % yInterval == 0) {
                                           return Text(
                                             '${(value / 1000).toInt()}k',
                                             style: TextStyle(
@@ -248,6 +266,7 @@ class StepsView extends StatelessWidget {
                                 gridData: FlGridData(
                                   show: true,
                                   drawVerticalLine: false,
+                                  horizontalInterval: yInterval,
                                   getDrawingHorizontalLine: (value) => FlLine(
                                     color: borderColor,
                                     strokeWidth: 1,
@@ -277,6 +296,8 @@ class StepsView extends StatelessWidget {
                                 }).toList(),
                               ),
                             ),
+                        );
+                      },
                     ),
                   ],
                 ),
