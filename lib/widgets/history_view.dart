@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -296,10 +297,12 @@ class _HistoryViewState extends State<HistoryView> {
                               height: 48,
                               color: Colors.black12,
                               child: imagePath.isNotEmpty
-                                  ? Image.network(
-                                      imagePath,
+                                  ? CachedNetworkImage(
+                                      imageUrl: imagePath,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (_, _, _) => const Icon(
+                                      memCacheWidth: 160,
+                                      placeholder: (_, _) => const SizedBox.shrink(),
+                                      errorWidget: (_, _, _) => const Icon(
                                         Icons.history_edu,
                                         color: Colors.white54,
                                       ),

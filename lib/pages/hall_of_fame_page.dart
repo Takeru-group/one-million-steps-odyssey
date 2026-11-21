@@ -115,6 +115,7 @@ class _HallOfFamePageState extends State<HallOfFamePage> {
               ? CachedNetworkImage(
                   imageUrl: imagePath,
                   fit: BoxFit.cover,
+                  memCacheWidth: 160,
                   placeholder: (_, _) => Container(
                     color: Colors.grey.withValues(alpha: 0.2),
                     child: const Center(

@@ -219,11 +219,32 @@ class UserRepository {
       );
     }
 
+    _prefetchThumbnailsInBackground(unlockedHistories, unlockedArtifacts);
+
     return UserDetailedData(
       user: user,
       unlockedHistories: unlockedHistories,
       unlockedArtifacts: unlockedArtifacts,
     );
+  }
+
+  /// 🌟 獲得済みアイテムのサムネイルをバックグラウンドで静かにディスクキャッシュへ保存
+  void _prefetchThumbnailsInBackground(
+    Map<String, HistoryMasterModel> histories,
+    Map<String, ArtifactModel> artifacts,
+  ) async {
+    final urls = <String>{};
+    for (final h in histories.values) {
+      final thumb = h.thumbnailPath.isNotEmpty ? h.thumbnailPath : h.backgroundImagePath;
+      if (thumb.startsWith('http')) urls.add(thumb);
+    }
+    for (final a in artifacts.values) {
+      final thumb = a.thumbnailPath.isNotEmpty ? a.thumbnailPath : a.backgroundImagePath;
+      if (thumb.startsWith('http')) urls.add(thumb);
+    }
+    for (final url in urls) {
+      await _masterDataRepository.ensureDiskCache(url);
+    }
   }
 
   void _syncMissingMetadata({

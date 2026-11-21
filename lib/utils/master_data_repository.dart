@@ -44,7 +44,7 @@ class MasterDataRepository {
     }
   }
 
-  void _backgroundEnsureDiskCache(String httpUrl) async {
+  Future<void> ensureDiskCache(String httpUrl) async {
     if (httpUrl.isEmpty || !httpUrl.startsWith('http')) return;
     try {
       final FileInfo? fileInfo = await _cacheManager.getFileFromCache(httpUrl);
@@ -52,6 +52,10 @@ class MasterDataRepository {
         await _cacheManager.getSingleFile(httpUrl);
       }
     } catch (_) {}
+  }
+
+  void _backgroundEnsureDiskCache(String httpUrl) {
+    ensureDiskCache(httpUrl);
   }
 
   static final Map<String, HistoryMasterModel> _historyMasterMemoryCache = {};
