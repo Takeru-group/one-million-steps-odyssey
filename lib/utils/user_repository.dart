@@ -54,8 +54,9 @@ class UserRepository {
       now.second,
     );
 
-    final initialEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
-    final initialMaster = await _masterDataRepository.getHistoryMaster(initialEraKey);
+    final rawEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
+    final initialEraKey = buildEraStorageKey(rawEraKey, nextGameMode);
+    final initialMaster = await _masterDataRepository.getHistoryMaster(rawEraKey);
 
     final initialEras = <String, Map<String, dynamic>>{
       initialEraKey: {
@@ -167,7 +168,7 @@ class UserRepository {
       }
 
       unlockedHistories[key] = HistoryMasterModel(
-        id: key,
+        id: extractMasterEraId(key),
         backgroundImagePath: map['backgroundImagePath'] as String? ?? '',
         descriptionEn: map['descriptionEn'] as String? ?? '',
         descriptionJp: map['descriptionJp'] as String? ?? '',
@@ -238,7 +239,7 @@ class UserRepository {
 
     for (final eraKey in missingEraKeys.keys) {
       try {
-        final master = await _masterDataRepository.getHistoryMaster(eraKey);
+        final master = await _masterDataRepository.getHistoryMaster(extractMasterEraId(eraKey));
         if (master != null) {
           final existingMap = missingEraKeys[eraKey] ?? {};
           existingMap['yearLabelJp'] = master.yearLabelJp;
@@ -292,7 +293,7 @@ class UserRepository {
     required String eraKey,
   }) async {
     try {
-      final master = await _masterDataRepository.getHistoryMaster(eraKey);
+      final master = await _masterDataRepository.getHistoryMaster(extractMasterEraId(eraKey));
       if (master == null) return null;
 
       final cacheKey = '$userId:$eraKey';
@@ -326,7 +327,7 @@ class UserRepository {
     final docRef = _firestore.collection('user').doc(userId);
     final now = DateTime.now().toUtc();
 
-    final master = await _masterDataRepository.getHistoryMaster(newEraKey);
+    final master = await _masterDataRepository.getHistoryMaster(extractMasterEraId(newEraKey));
 
     final newScheduledDeletionAt = DateTime(
       now.year + 1,
@@ -502,6 +503,18 @@ class UserRepository {
     }
 
     return await getUserWithDetails(userId);
+  }
+
+  /// 周回（gameMode）ごとの保存用キーを生成（0周目は互換性のためプレフィックスなし）
+  static String buildEraStorageKey(String rawEraKey, int gameMode) {
+    final cleanKey = extractMasterEraId(rawEraKey);
+    return gameMode == 0 ? cleanKey : '${gameMode}_$cleanKey';
+  }
+
+  /// 保存用キー（例: "1_bc_0710" や "bc_0710"）からマスターID（"bc_0710"）を抽出
+  static String extractMasterEraId(String storageKey) {
+    final match = RegExp(r'^\d+_((?:bc|ad)_\d+)$').firstMatch(storageKey);
+    return match != null ? match.group(1)! : storageKey;
   }
 
   static String calculateEraKey(String era, int year) {

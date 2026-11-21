@@ -333,8 +333,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final langCode = Localizations.localeOf(context).languageCode;
-    final isEn = langCode == 'en';
+    final l10n = AppLocalizations.of(context)!;
 
     // フェード速度も加速状態に連動
     final fadeDuration = Duration(milliseconds: _isFastForwarding ? 180 : 450);
@@ -389,7 +388,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                       const Icon(Icons.auto_awesome, color: Colors.amberAccent, size: 34),
                       const SizedBox(height: 14),
                       Text(
-                        isEn ? 'ONE MILLION STEPS ODYSSEY' : '100万歩の旅 完結',
+                        l10n.endingMainTitle,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.amberAccent,
@@ -400,9 +399,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        isEn
-                            ? 'A Chronicle of Your 1,000,000 Steps'
-                            : 'あなたが歩んだ100万日・2,700年の軌跡',
+                        l10n.endingSubtitle,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.white70,
@@ -418,9 +415,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                   if (_timelineItems.isEmpty)
                     Center(
                       child: Text(
-                        isEn
-                            ? 'Your journey has reached the modern era.'
-                            : '長い歴史の旅を経て、現代へと到達しました。',
+                        l10n.endingEmptyFallback,
                         style: const TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     )
@@ -475,7 +470,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                       const Divider(color: Colors.white24),
                       const SizedBox(height: 28),
                       Text(
-                        isEn ? 'THANK YOU FOR WALKING' : 'Thank you for walking.',
+                        l10n.endingFinaleTitle,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           color: Colors.amberAccent,
@@ -486,9 +481,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        isEn
-                            ? 'Every step you took carved a new page in history.'
-                            : 'あなたの確かな一歩一歩が、壮大な歴史を紡ぎました。',
+                        l10n.endingFinaleSubtitle,
                         textAlign: TextAlign.center,
                         style: const TextStyle(color: Colors.white70, fontSize: 14),
                       ),
@@ -512,7 +505,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                     const Icon(Icons.fast_forward, color: Colors.amberAccent, size: 18),
                     const SizedBox(width: 6),
                     Text(
-                      isEn ? 'Fast Forward' : '早送り中',
+                      l10n.endingFastForward,
                       style: const TextStyle(
                         color: Colors.amberAccent,
                         fontSize: 12,
@@ -547,7 +540,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              isEn ? 'Skip' : 'スキップ',
+                              l10n.endingSkip,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

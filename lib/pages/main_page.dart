@@ -375,7 +375,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       stepsPerDay: 1,
     );
 
-    return UserRepository.calculateEraKey(currentDate.era, currentDate.year);
+    final rawKey = UserRepository.calculateEraKey(currentDate.era, currentDate.year);
+    return UserRepository.buildEraStorageKey(rawKey, user.gameMode);
   }
 
   /// 🌟 年代更新 ＆ 世紀（Century）跨ぎイベントの統括処理
