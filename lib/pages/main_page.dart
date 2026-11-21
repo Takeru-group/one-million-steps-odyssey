@@ -1,3 +1,4 @@
+import 'odyssey_ending_page.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,6 +49,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   // 🌟 ダイアログ排他制御
   bool _isUpdatingEra = false;
   bool _isShowingDialog = false;
+  bool _isShowingEnding = false;
 
   String? _resolvedBgUrl;
   List<Map<String, dynamic>> _pastWeeklySteps = [];
@@ -196,6 +198,66 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     }
   }
 
+
+  /// 🌟 現在のアプリ内日付が「現在（今日）」に到達したか判定
+  bool _hasReachedPresentDay(UserModel user, int totalSteps) {
+    final currentAppDate = TimelineCalculator.addStepsToDate(
+      era: user.startEra,
+      year: user.startYear,
+      month: user.startMonth,
+      day: user.startDay,
+      steps: totalSteps,
+      stepsPerDay: 1,
+    );
+    if (currentAppDate.era == '紀元前' || currentAppDate.era == 'BCE') {
+      return false;
+    }
+    final now = DateTime.now();
+    if (currentAppDate.year > now.year) return true;
+    if (currentAppDate.year < now.year) return false;
+    if (currentAppDate.month > now.month) return true;
+    if (currentAppDate.month < now.month) return false;
+    return currentAppDate.day >= now.day;
+  }
+
+  /// 🌟 100万歩到達エンディングの起動と次周回への切り替え反映
+  Future<void> _launchEndingSequence() async {
+    if (_isShowingEnding || _detailedData == null || !mounted) return;
+    _isShowingEnding = true;
+    _isShowingDialog = true;
+
+    final nextRoundData = await Navigator.push<UserDetailedData>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => OdysseyEndingPage(
+          detailedData: _detailedData,
+          fallbackBgUrl: _resolvedBgUrl,
+        ),
+      ),
+    );
+
+    if (mounted && nextRoundData != null) {
+      setState(() {
+        _detailedData = nextRoundData;
+        _incrementalSteps = 0;
+        _resolvedBgUrl = null;
+        _currentEraKey = _calculateCurrentEraKey(nextRoundData.user.totalSteps);
+      });
+      _resolveBgUrlAsync();
+      StepTrackerService.startForegroundTracking(
+        context: context,
+        stepFetchedAt: nextRoundData.user.stepFetchedAt ?? DateTime.now(),
+        onStepsUpdated: _onStepsUpdated,
+        onWeeklyUpdated: (weekly) {
+          if (mounted) setState(() => _pastWeeklySteps = weekly);
+        },
+      );
+    }
+
+    _isShowingEnding = false;
+    _isShowingDialog = false;
+  }
+
   /// 🌟 歩数更新・イベントチェーン
   void _onStepsUpdated(int incrementalSteps, int todaySteps) async {
     if (!mounted || _detailedData == null) return;
@@ -211,6 +273,15 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     final currentTotalSteps =
         _detailedData!.user.totalSteps + _incrementalSteps;
+
+    // 0. 最優先: アプリ開始日（現在日）到達時はエンディング演出を起動
+    if (_hasReachedPresentDay(_detailedData!.user, currentTotalSteps)) {
+      if (!_isShowingEnding && !_isUpdatingEra) {
+        _launchEndingSequence();
+      }
+      return;
+    }
+
     final calculatedEraKey = _calculateCurrentEraKey(currentTotalSteps);
 
     // 1. 最優先: 年代・世紀到達イベント

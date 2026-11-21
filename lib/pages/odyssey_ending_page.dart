@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
@@ -31,6 +32,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
   double _bgOpacity = 0.0;
   bool _isFastForwarding = false;
   bool _isDialogShown = false;
+  bool _isStartingNewRound = false;
 
   @override
   void initState() {
@@ -215,97 +217,119 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
     }
   }
 
-  /// スキップ押下またはスクロール完了時の確認ダイアログ
+  /// スキップ押下またはスクロール完了時の確認ダイアログ（キャンセル無し・OKで次周回開始）
   Future<void> _showNewAdventureDialog() async {
     if (_isDialogShown || !mounted) return;
     _isDialogShown = true;
     _scrollTimer?.cancel();
     _imageFadeTimer?.cancel();
-
     setState(() {
       _bgOpacity = 0.0;
       _isFastForwarding = false;
     });
-
-    final langCode = Localizations.localeOf(context).languageCode;
-    final isEn = langCode == 'en';
-
+    final l10n = AppLocalizations.of(context)!;
     await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (dialogCtx) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-          child: AlertDialog(
-            backgroundColor: Colors.black.withValues(alpha: 0.85),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-              side: BorderSide(color: Colors.amberAccent.withValues(alpha: 0.6)),
-            ),
-            title: Column(
-              children: [
-                const Icon(Icons.emoji_events, color: Colors.amberAccent, size: 42),
-                const SizedBox(height: 12),
-                Text(
-                  isEn ? '1,000,000 Steps Achieved!' : '100万歩達成おめでとうございます！',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            content: Text(
-              isEn
-                  ? 'You have walked through 2,700 years of human history and reached the present day.\n\nWould you like to start a new adventure?'
-                  : '約2,700年にわたる人類の歴史を歩みきり、ついに現代へ追いつきました。\n\n新しい冒険を始めますか？',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-                height: 1.6,
-              ),
-            ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(dialogCtx);
-                  if (mounted) Navigator.pop(context);
-                },
-                child: Text(
-                  isEn ? 'Later' : 'あとで',
-                  style: const TextStyle(color: Colors.white54),
-                ),
-              ),
-              const SizedBox(width: 8),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amberAccent,
-                  foregroundColor: Colors.black87,
-                  padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) {
+            return PopScope(
+              canPop: false,
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                child: AlertDialog(
+                  backgroundColor: Colors.black.withValues(alpha: 0.85),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(24),
+                    side: BorderSide(color: Colors.amberAccent.withValues(alpha: 0.6)),
                   ),
-                ),
-                onPressed: () {
-                  Navigator.pop(dialogCtx);
-                  if (mounted) Navigator.pop(context);
-                },
-                child: Text(
-                  isEn ? 'Start' : '始める',
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  title: Column(
+                    children: [
+                      const Icon(Icons.emoji_events, color: Colors.amberAccent, size: 42),
+                      const SizedBox(height: 12),
+                      Text(
+                        l10n.endingAchievedTitle,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  content: Text(
+                    l10n.endingAchievedDesc,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      height: 1.6,
+                    ),
+                  ),
+                  actionsAlignment: MainAxisAlignment.center,
+                  actions: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amberAccent,
+                        foregroundColor: Colors.black87,
+                        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      onPressed: _isStartingNewRound
+                          ? null
+                          : () async {
+                              setDialogState(() {
+                                _isStartingNewRound = true;
+                              });
+                              try {
+                                final uid = FirebaseAuth.instance.currentUser?.uid;
+                                final currentGameMode = widget.detailedData?.user.gameMode ?? 0;
+                                UserDetailedData? nextRoundData;
+                                if (uid != null) {
+                                  nextRoundData = await UserRepository().startNewRound(
+                                    userId: uid,
+                                    currentGameMode: currentGameMode,
+                                  );
+                                }
+                                if (dialogCtx.mounted) {
+                                  Navigator.pop(dialogCtx);
+                                }
+                                if (mounted) {
+                                  Navigator.pop(context, nextRoundData);
+                                }
+                              } catch (e) {
+                                setDialogState(() {
+                                  _isStartingNewRound = false;
+                                });
+                              }
+                            },
+                      child: _isStartingNewRound
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: Colors.black87,
+                              ),
+                            )
+                          : Text(
+                              l10n.btnStart,
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -315,7 +339,9 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
     // フェード速度も加速状態に連動
     final fadeDuration = Duration(milliseconds: _isFastForwarding ? 180 : 450);
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
@@ -540,6 +566,7 @@ class _OdysseyEndingPageState extends State<OdysseyEndingPage> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

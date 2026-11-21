@@ -182,5 +182,100 @@
   "hallOfFameTitle": "歴史の殿堂",
   "hallOfFameEras": "年代",
   "hallOfFameArtifacts": "アーティファクト",
-  "hallOfFameEmpty": "獲得したアイテムはありません"
+  "hallOfFameEmpty": "獲得したアイテムはありません",
+  "menuRoundCount": "周回数: {count}周目",
+  "@menuRoundCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "menuStartDate": "開始日: {date}",
+  "@menuStartDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "menuInquiry": "お問い合わせ",
+  "menuTermsOfService": "利用規約",
+  "menuPrivacyPolicy": "プライバシーポリシー",
+  "menuOssLicenses": "オープンソースライセンス",
+  "menuDeleteAccount": "アカウントを削除",
+  "deleteAccountDialogTitle": "アカウントの削除",
+  "deleteAccountDialogMessage": "アカウントを削除すると、これまでの歩数、獲得した年代、アーティファクトのデータはすべて完全に消去され、復旧できません。\n\n続行するには、下に「delete」と入力してください。",
+  "deleteAccountConfirmButton": "削除する",
+  "deleteAccountFailed": "アカウント削除に失敗しました（再ログインが必要な場合があります）: {error}",
+  "@deleteAccountFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "logoutFailed": "ログアウトに失敗しました: {error}",
+  "@logoutFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "urlOpenFailed": "ページを開けませんでした",
+  "artifactRewardTitle": "アーティファクト獲得！",
+  "btnClose": "閉じる",
+  "centuryEnteredTitle": "{century}に突入しました！",
+  "@centuryEnteredTitle": {
+    "placeholders": {
+      "century": {
+        "type": "String"
+      }
+    }
+  },
+  "eraEnteredTitle": "次の年代に入りました！",
+  "centuryEnteredDesc": "新しい時代「{eraLabel}年代」に到達し、{century}に突入しました！\n背景と歴史情報が更新されます。",
+  "@centuryEnteredDesc": {
+    "placeholders": {
+      "eraLabel": {
+        "type": "String"
+      },
+      "century": {
+        "type": "String"
+      }
+    }
+  },
+  "eraEnteredDesc": "新しい時代「{eraLabel}年代」に到達しました！\n背景と歴史情報が更新されます。",
+  "@eraEnteredDesc": {
+    "placeholders": {
+      "eraLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "btnContinueJourney": "旅を続ける",
+  "endingAchievedTitle": "100万歩達成おめでとうございます！",
+  "endingAchievedDesc": "約2,700年にわたる人類の歴史を歩みきり、ついに現代へ追いつきました。\n\n新しい冒険を始めますか？",
+  "btnLater": "あとで",
+  "btnStart": "始める",
+  "endingMainTitle": "100万歩の旅 完結",
+  "endingSubtitle": "あなたが歩んだ100万日・2,700年の軌跡",
+  "endingEmptyFallback": "長い歴史の旅を経て、現代へと到達しました。",
+  "endingFinaleTitle": "Thank you for walking.",
+  "endingFinaleSubtitle": "あなたの確かな一歩一歩が、壮大な歴史を紡ぎました。",
+  "endingFastForward": "早送り中",
+  "endingSkip": "スキップ",
+  "artifactAllCollected": "この世紀のアーティファクトはすべて獲得済みです！",
+  "hintTooltip": "ヒントを見る",
+  "adNotReady": "広告の準備ができていません",
+  "legalLoadFailed": "ドキュメントの読み込みに失敗しました。",
+  "hallOfFameCenturyCe": "西暦 {century} 世紀",
+  "@hallOfFameCenturyCe": {
+    "placeholders": {
+      "century": {
+        "type": "int"
+      }
+    }
+  }
 }

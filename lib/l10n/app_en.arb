@@ -182,5 +182,100 @@
   "hallOfFameTitle": "Hall of Fame",
   "hallOfFameEras": "Eras",
   "hallOfFameArtifacts": "Artifacts",
-  "hallOfFameEmpty": "No collected items yet"
+  "hallOfFameEmpty": "No collected items yet",
+  "menuRoundCount": "Round: {count}",
+  "@menuRoundCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "menuStartDate": "Started: {date}",
+  "@menuStartDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "menuInquiry": "Contact Us",
+  "menuTermsOfService": "Terms of Service",
+  "menuPrivacyPolicy": "Privacy Policy",
+  "menuOssLicenses": "Open Source Licenses",
+  "menuDeleteAccount": "Delete Account",
+  "deleteAccountDialogTitle": "Delete Account",
+  "deleteAccountDialogMessage": "Deleting your account will permanently erase all your step history, unlocked eras, and collected artifacts. This action cannot be undone.\n\nTo continue, please type \"delete\" below.",
+  "deleteAccountConfirmButton": "Delete",
+  "deleteAccountFailed": "Failed to delete account (re-authentication may be required): {error}",
+  "@deleteAccountFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "logoutFailed": "Failed to log out: {error}",
+  "@logoutFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "urlOpenFailed": "Could not open the page.",
+  "artifactRewardTitle": "Artifact Discovered!",
+  "btnClose": "Close",
+  "centuryEnteredTitle": "Entered the {century}!",
+  "@centuryEnteredTitle": {
+    "placeholders": {
+      "century": {
+        "type": "String"
+      }
+    }
+  },
+  "eraEnteredTitle": "Entered a New Era!",
+  "centuryEnteredDesc": "You have reached a new era ({eraLabel}s) and entered the {century}!\nBackground scenery and historical info have been updated.",
+  "@centuryEnteredDesc": {
+    "placeholders": {
+      "eraLabel": {
+        "type": "String"
+      },
+      "century": {
+        "type": "String"
+      }
+    }
+  },
+  "eraEnteredDesc": "You have reached a new era ({eraLabel}s)!\nBackground scenery and historical info have been updated.",
+  "@eraEnteredDesc": {
+    "placeholders": {
+      "eraLabel": {
+        "type": "String"
+      }
+    }
+  },
+  "btnContinueJourney": "Continue Journey",
+  "endingAchievedTitle": "1,000,000 Steps Achieved!",
+  "endingAchievedDesc": "You have walked through 2,700 years of human history and reached the present day.\n\nWould you like to start a new adventure?",
+  "btnLater": "Later",
+  "btnStart": "Start",
+  "endingMainTitle": "ONE MILLION STEPS ODYSSEY",
+  "endingSubtitle": "A Chronicle of Your 1,000,000 Steps",
+  "endingEmptyFallback": "Your journey has reached the modern era.",
+  "endingFinaleTitle": "THANK YOU FOR WALKING",
+  "endingFinaleSubtitle": "Every step you took carved a new page in history.",
+  "endingFastForward": "Fast Forward",
+  "endingSkip": "Skip",
+  "artifactAllCollected": "You have already collected all artifacts from this century!",
+  "hintTooltip": "View Hint",
+  "adNotReady": "Ad is not ready yet.",
+  "legalLoadFailed": "Failed to load document.",
+  "hallOfFameCenturyCe": "{century}th Century",
+  "@hallOfFameCenturyCe": {
+    "placeholders": {
+      "century": {
+        "type": "int"
+      }
+    }
+  }
 }

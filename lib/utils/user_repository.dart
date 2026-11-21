@@ -444,6 +444,66 @@ class UserRepository {
     return artifactMaster;
   }
 
+
+  /// 🌟 100万歩達成後、次の周回（New Round）を開始する
+  Future<UserDetailedData> startNewRound({
+    required String userId,
+    required int currentGameMode,
+  }) async {
+    final docRef = _firestore.collection('user').doc(userId);
+    final now = DateTime.now().toUtc();
+    final nextGameMode = currentGameMode + 1;
+    final startAppDate = TimelineCalculator.calculateAppStartDate(now);
+    final scheduledDeletionAt = DateTime(
+      now.year + 1,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute,
+      now.second,
+    );
+
+    final initialEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
+    final initialMaster = await _masterDataRepository.getHistoryMaster(initialEraKey);
+
+    final eraData = {
+      'unlockedAt': Timestamp.fromDate(now),
+      'eraLabel': startAppDate.eraLabel,
+      'yearLabelJp': initialMaster?.yearLabelJp ?? startAppDate.eraLabel,
+      'yearLabelEn': initialMaster?.yearLabelEn ?? startAppDate.eraLabel,
+      'imageTitleJp': initialMaster?.imageTitleJp ?? '',
+      'imageTitleEn': initialMaster?.imageTitleEn ?? '',
+      'backgroundImagePath': initialMaster?.backgroundImagePath ?? '',
+      'thumbnailPath': initialMaster?.thumbnailPath ?? '',
+      'descriptionJp': initialMaster?.descriptionJp ?? '',
+      'descriptionEn': initialMaster?.descriptionEn ?? '',
+      'century': startAppDate.century,
+      'gameMode': nextGameMode,
+    };
+
+    try {
+      await docRef.update({
+        'appStartDate': Timestamp.fromDate(now),
+        'stepFetchedAt': Timestamp.fromDate(now),
+        'startEra': startAppDate.era,
+        'startYear': startAppDate.year,
+        'startMonth': startAppDate.month,
+        'startDay': startAppDate.day,
+        'isCleared': false,
+        'gameMode': nextGameMode,
+        'totalSteps': 0,
+        'scheduledDeletionAt': Timestamp.fromDate(scheduledDeletionAt),
+        'unlockedEras.$initialEraKey': eraData,
+      }).timeout(const Duration(seconds: 4));
+      print('🔄 [UserRepository] 新しい周回を開始しました (Round ${nextGameMode + 1})');
+    } catch (e) {
+      print('❌ [UserRepository] 周回リセットエラー: $e');
+      rethrow;
+    }
+
+    return await getUserWithDetails(userId);
+  }
+
   static String calculateEraKey(String era, int year) {
     final isBce = (era == '紀元前' || era == 'BCE');
     final roundedYear = (year ~/ 10) * 10;

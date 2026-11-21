@@ -9,7 +9,6 @@ import '../main.dart';
 import '../models/user_model.dart';
 import '../utils/background_fetch_service.dart';
 import '../pages/hall_of_fame_page.dart';
-import '../pages/odyssey_ending_page.dart';
 import '../pages/legal_document_page.dart';
 import '../pages/initial_page.dart';
 import '../utils/step_tracker_service.dart';
@@ -123,12 +122,13 @@ class _SideMenuViewState extends State<SideMenuView> {
 
   /// 🌐 外部ブラウザでURLを開く共通ヘルパー
   Future<void> _launchExternalUrl(BuildContext context, Uri uri) async {
+    final l10n = AppLocalizations.of(context)!;
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ページを開けませんでした')),
+          SnackBar(content: Text(l10n.urlOpenFailed)),
         );
       }
     }
@@ -223,7 +223,7 @@ class _SideMenuViewState extends State<SideMenuView> {
       navigator.pop();
       scaffoldMessenger.showSnackBar(
         SnackBar(
-          content: Text('ログアウトに失敗しました: $e'),
+          content: Text(l10n.logoutFailed(e.toString())),
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -232,6 +232,7 @@ class _SideMenuViewState extends State<SideMenuView> {
 
   /// ⚠️ アカウント削除処理（Firestoreデータ削除 ➔ Authアカウント削除 ➔ InitialPage遷移）
   Future<void> _handleDeleteAccount(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final dialogBgColor = isDarkMode
         ? Colors.black.withValues(alpha: 0.85)
@@ -256,13 +257,15 @@ class _SideMenuViewState extends State<SideMenuView> {
                   borderRadius: BorderRadius.circular(20),
                   side: const BorderSide(color: Colors.redAccent, width: 1.5),
                 ),
-                title: const Row(
+                title: Row(
                   children: [
-                    Icon(Icons.warning_amber_rounded, color: Colors.redAccent),
-                    SizedBox(width: 8),
-                    Text(
-                      'アカウントの削除',
-                      style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                    const Icon(Icons.warning_amber_rounded, color: Colors.redAccent),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.deleteAccountDialogTitle,
+                        style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -271,7 +274,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'アカウントを削除すると、これまでの歩数、獲得した年代、アーティファクトのデータはすべて完全に消去され、復旧できません。\n\n続行するには、下に「delete」と入力してください。',
+                      l10n.deleteAccountDialogMessage,
                       style: TextStyle(color: textColor, fontSize: 13, height: 1.5),
                     ),
                     const SizedBox(height: 16),
@@ -299,7 +302,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(dialogCtx, false),
-                    child: Text('キャンセル', style: TextStyle(color: subTextColor)),
+                    child: Text(l10n.menuCancel, style: TextStyle(color: subTextColor)),
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -307,7 +310,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                       foregroundColor: Colors.white,
                     ),
                     onPressed: isDeleteEnabled ? () => Navigator.pop(dialogCtx, true) : null,
-                    child: const Text('削除する', style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: Text(l10n.deleteAccountConfirmButton, style: const TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -353,7 +356,7 @@ class _SideMenuViewState extends State<SideMenuView> {
       navigator.pop();
       scaffoldMessenger.showSnackBar(
         SnackBar(
-          content: Text('アカウント削除に失敗しました（再ログインが必要な場合があります）: $e'),
+          content: Text(l10n.deleteAccountFailed(e.toString())),
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -426,7 +429,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                             Icon(Icons.replay, size: 14, color: subTextColor),
                             const SizedBox(width: 4),
                             Text(
-                              '周回数: $roundNumber周目',
+                              l10n.menuRoundCount(roundNumber),
                               style: TextStyle(fontSize: 12, color: subTextColor),
                             ),
                           ],
@@ -437,7 +440,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                             Icon(Icons.calendar_today_outlined, size: 14, color: subTextColor),
                             const SizedBox(width: 4),
                             Text(
-                              '開始日: $startDateStr',
+                              l10n.menuStartDate(startDateStr),
                               style: TextStyle(fontSize: 12, color: subTextColor),
                             ),
                           ],
@@ -482,40 +485,12 @@ class _SideMenuViewState extends State<SideMenuView> {
                   },
                 ),
 
-                // 🧪 テスト用: 100万歩達成エンディング演出画面
-                ListTile(
-                  leading: const Icon(Icons.movie_filter_outlined, color: Colors.cyanAccent),
-                  title: const Text(
-                    '1Mtest',
-                    style: TextStyle(
-                      color: Colors.cyanAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.play_arrow_rounded,
-                    size: 18,
-                    color: subTextColor,
-                  ),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => OdysseyEndingPage(
-                          detailedData: widget.detailedData,
-                          fallbackBgUrl: widget.bgImageUrl,
-                        ),
-                      ),
-                    );
-                  },
-                ),
 
                 // 🌟 お問い合わせ（カッコ内文言なし）
                 ListTile(
                   leading: Icon(Icons.help_outline_rounded, color: textColor),
                   title: Text(
-                    'お問い合わせ',
+                    l10n.menuInquiry,
                     style: TextStyle(color: textColor, fontSize: 14),
                   ),
                   trailing: Icon(Icons.open_in_new, size: 16, color: subTextColor),
@@ -594,7 +569,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                 ListTile(
                   leading: Icon(Icons.description_outlined, color: subTextColor),
                   title: Text(
-                    '利用規約',
+                    l10n.menuTermsOfService,
                     style: TextStyle(color: textColor, fontSize: 14),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: 14, color: subTextColor),
@@ -615,7 +590,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                 ListTile(
                   leading: Icon(Icons.privacy_tip_outlined, color: subTextColor),
                   title: Text(
-                    'プライバシーポリシー',
+                    l10n.menuPrivacyPolicy,
                     style: TextStyle(color: textColor, fontSize: 14),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: 14, color: subTextColor),
@@ -636,7 +611,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                 ListTile(
                   leading: Icon(Icons.source_outlined, color: subTextColor),
                   title: Text(
-                    'オープンソースライセンス',
+                    l10n.menuOssLicenses,
                     style: TextStyle(color: textColor, fontSize: 14),
                   ),
                   trailing: Icon(Icons.arrow_forward_ios, size: 14, color: subTextColor),
@@ -665,9 +640,9 @@ class _SideMenuViewState extends State<SideMenuView> {
                 // 🌟 アカウント削除（赤字）
                 ListTile(
                   leading: const Icon(Icons.delete_forever, color: Colors.redAccent),
-                  title: const Text(
-                    'アカウントを削除',
-                    style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                  title: Text(
+                    l10n.menuDeleteAccount,
+                    style: const TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold),
                   ),
                   onTap: () => _handleDeleteAccount(context),
                 ),
