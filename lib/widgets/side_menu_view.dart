@@ -9,6 +9,8 @@ import '../main.dart';
 import '../models/user_model.dart';
 import '../utils/background_fetch_service.dart';
 import '../pages/hall_of_fame_page.dart';
+import '../pages/odyssey_ending_page.dart';
+import '../pages/legal_document_page.dart';
 import '../pages/initial_page.dart';
 import '../utils/step_tracker_service.dart';
 import '../utils/user_repository.dart';
@@ -115,12 +117,17 @@ class _SideMenuViewState extends State<SideMenuView> {
       '&entry.1846488604=${Uri.encodeComponent(nickName)}',
     );
 
+    await _launchExternalUrl(context, uri);
+  }
+
+  /// 🌐 外部ブラウザでURLを開く共通ヘルパー
+  Future<void> _launchExternalUrl(BuildContext context, Uri uri) async {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('お問い合わせページを開けませんでした')),
+          const SnackBar(content: Text('ページを開けませんでした')),
         );
       }
     }
@@ -222,7 +229,7 @@ class _SideMenuViewState extends State<SideMenuView> {
     }
   }
 
-  /// ⚠️ アカウント削除処理（"delete" 入力確認モーダル）
+  /// ⚠️ アカウント削除処理（Firestoreデータ削除 ➔ Authアカウント削除 ➔ InitialPage遷移）
   Future<void> _handleDeleteAccount(BuildContext context) async {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final dialogBgColor = isDarkMode
@@ -325,12 +332,14 @@ class _SideMenuViewState extends State<SideMenuView> {
     try {
       final user = widget.user;
       if (user != null) {
-        // Firestore 側のユーザードキュメント削除
+        // 1. Firestore 側のユーザードキュメントを完全削除
         await FirebaseFirestore.instance.collection('user').doc(user.uid).delete();
-        // 追跡停止
+
+        // 2. トラッカーとバックグラウンドタスクを停止
         StepTrackerService.stopTracking();
         await BackgroundFetchService.stop();
-        // 認証削除
+
+        // 3. Auth のアカウント自体を削除
         await user.delete();
       }
 
@@ -411,7 +420,6 @@ class _SideMenuViewState extends State<SideMenuView> {
                           ],
                         ),
                         const SizedBox(height: 6),
-                        // 🌟 周回数
                         Row(
                           children: [
                             Icon(Icons.replay, size: 14, color: subTextColor),
@@ -423,7 +431,6 @@ class _SideMenuViewState extends State<SideMenuView> {
                           ],
                         ),
                         const SizedBox(height: 2),
-                        // 🌟 開始日
                         Row(
                           children: [
                             Icon(Icons.calendar_today_outlined, size: 14, color: subTextColor),
@@ -445,7 +452,7 @@ class _SideMenuViewState extends State<SideMenuView> {
                 ),
                 Divider(color: borderColor),
 
-                // 殿堂
+                // 歴史の殿堂
                 ListTile(
                   leading: const Icon(Icons.account_balance, color: Colors.amberAccent),
                   title: Text(
@@ -474,11 +481,40 @@ class _SideMenuViewState extends State<SideMenuView> {
                   },
                 ),
 
-                // 🌟 お問い合わせ（不具合・オーパーツ報告）
+                // 🧪 テスト用: 100万歩達成エンディング演出画面
+                ListTile(
+                  leading: const Icon(Icons.movie_filter_outlined, color: Colors.cyanAccent),
+                  title: const Text(
+                    '1Mtest',
+                    style: TextStyle(
+                      color: Colors.cyanAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.play_arrow_rounded,
+                    size: 18,
+                    color: subTextColor,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => OdysseyEndingPage(
+                          detailedData: widget.detailedData,
+                          fallbackBgUrl: widget.bgImageUrl,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                // 🌟 お問い合わせ（カッコ内文言なし）
                 ListTile(
                   leading: Icon(Icons.help_outline_rounded, color: textColor),
                   title: Text(
-                    'お問い合わせ（不具合・オーパーツ報告）',
+                    'お問い合わせ',
                     style: TextStyle(color: textColor, fontSize: 14),
                   ),
                   trailing: Icon(Icons.open_in_new, size: 16, color: subTextColor),
@@ -545,14 +581,86 @@ class _SideMenuViewState extends State<SideMenuView> {
                 ),
                 Divider(color: borderColor),
 
-                // ログアウト
+                // 🌟 ログアウト（赤色）
                 ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.orangeAccent),
+                  leading: const Icon(Icons.logout, color: Colors.redAccent),
                   title: Text(
                     l10n.menuLogOut,
-                    style: const TextStyle(color: Colors.orangeAccent),
+                    style: const TextStyle(color: Colors.redAccent),
                   ),
                   onTap: () => _handleLogout(context),
+                ),
+
+                // 🌟 利用規約 (PDF)
+                ListTile(
+                  leading: Icon(Icons.description_outlined, color: subTextColor),
+                  title: Text(
+                    '利用規約',
+                    style: TextStyle(color: textColor, fontSize: 14),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, size: 14, color: subTextColor),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LegalDocumentPage(
+                          documentType: LegalDocumentType.termsOfService,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                // 🌟 プライバシーポリシー (PDF)
+                ListTile(
+                  leading: Icon(Icons.privacy_tip_outlined, color: subTextColor),
+                  title: Text(
+                    'プライバシーポリシー',
+                    style: TextStyle(color: textColor, fontSize: 14),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, size: 14, color: subTextColor),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LegalDocumentPage(
+                          documentType: LegalDocumentType.privacyPolicy,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                // 🌟 OSS（オープンソースライセンス）
+                ListTile(
+                  leading: Icon(Icons.source_outlined, color: subTextColor),
+                  title: Text(
+                    'オープンソースライセンス',
+                    style: TextStyle(color: textColor, fontSize: 14),
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios, size: 14, color: subTextColor),
+                  onTap: () {
+                    Navigator.pop(context);
+                    showLicensePage(
+                      context: context,
+                      applicationName: l10n.appTitle,
+                      applicationVersion: '1.0.0',
+                      applicationIcon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            'assets/images/mainback1.jpeg',
+                            width: 64,
+                            height: 64,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
 
                 // 🌟 アカウント削除（赤字）
