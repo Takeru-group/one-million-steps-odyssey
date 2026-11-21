@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:one_million_steps_odyssey/l10n/app_localizations.dart';
@@ -70,6 +71,22 @@ class MyApp extends StatelessWidget {
           valueListenable: themeModeNotifier,
           builder: (context, currentThemeMode, child) {
             return MaterialApp(
+              builder: (context, child) {
+                final isDark = Theme.of(context).brightness == Brightness.dark;
+                final overlayStyle = SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  // iOS用: dark = 黒文字/黒アイコン, light = 白文字/白アイコン
+                  statusBarBrightness: isDark ? Brightness.dark : Brightness.light,
+                  // Android用: dark = 黒アイコン, light = 白アイコン
+                  statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+                  systemNavigationBarColor: isDark ? Colors.black : Colors.white,
+                  systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+                );
+                return AnnotatedRegion<SystemUiOverlayStyle>(
+                  value: overlayStyle,
+                  child: child ?? const SizedBox.shrink(),
+                );
+              },
               title: 'One Million Steps Odyssey',
               debugShowCheckedModeBanner: false,
               
