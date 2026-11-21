@@ -15,19 +15,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get onboardingTitle1 => '100万歩の旅へようこそ';
 
   @override
-  String get onboardingDesc1 => '1歩を1日として「100万日前」から現在までの人類の旅に出かけましょう!';
+  String get onboardingDesc1 =>
+      '現実の1歩がアプリでは1日で計算されます！「100万日前」から現在までの人類の旅に出かけましょう!';
 
   @override
   String get onboardingTitle2 => 'アーティファクトを集めよう';
 
   @override
-  String get onboardingDesc2 => '世紀を巡る旅の中で、世界中の「物語」にまつわる アーティファクトを集めましょう。';
+  String get onboardingDesc2 => '100万歩つまり100万日は何世紀にも渡ります。その年代のアーティファクトを集めましょう。';
 
   @override
   String get onboardingTitle3 => 'あなたの冒険をスタート';
 
   @override
-  String get onboardingDesc3 => 'さあ、シューズを履いて古くて新しい旅の始まりです！ログインまたはユーザー登録して始めます。';
+  String get onboardingDesc3 =>
+      'アプリを開始したら後は歩くだけ。時々アプリを見てどの年代まで進んだか確認してみてください！ログインまたはユーザー登録して始めます。';
 
   @override
   String get btnNext => '次へ';
@@ -45,16 +47,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tabHistory => '歴史';
 
   @override
-  String historyReached(String name) {
-    return '$name に到達しました。';
-  }
-
-  @override
-  String artifactDiscovered(String name) {
-    return '$name を発見しました。';
-  }
-
-  @override
   String figureMet(String name) {
     return '$name と出会いました。';
   }
@@ -64,14 +56,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get hintHomeDesc =>
-      '【歩数と歴史の進行】\nあなたが歩いた歩数（1歩＝約1日）に応じて、人類の歴史が古代（紀元前700年代〜）から現代へと進んでいきます。アプリを開いていない間もバックグラウンドで自動同期されます。\n\n【年代と背景グラフィック】\n・上部の日付ボタンをタップすると、現在滞在している年代の歴史的解説や画像タイトルを閲覧できます。\n・歩数が一定数に達するごとに次の年代へ到達し、背景グラフィックが自動的に切り替わります。\n・100年単位の「世紀」を跨ぐ際には特別な世紀突入演出が発生し、節目の世紀ではアプリ内レビュー、その他の世紀ではインタースティシャル広告が表示されます。\n\n【アーティファクトの収集】\n・右下の★ボタン：4時間のクールダウン経過後に動画広告を視聴することで、滞在中の年代にまつわる未獲得のアーティファクト（技術・偉人・歴史的出来事）を1つ獲得できます。\n・日々の歩数マイルストーン：1日に6,000歩、10,000歩に到達することでも、確定でそれぞれアーティファクトを獲得できます。';
+      '【歩数と歴史の進行】\nあなたが歩いた歩数に応じて、アプリ内で1歩を1日換算として、アプリをスタートした日から100万日前の古代から現代へと進んでいきます。\nアプリを開いていない間もバックグラウンドで自動同期されます。\n\n【年代と背景グラフィック】\n・上部の日付ボタンをタップすると、現在滞在している年代の歴史的解説や画像タイトルを閲覧できます。\n・10年毎に次の年代へ到達し、背景グラフィックが自動的に切り替わります。\n・100年単位で「世紀」が進んでいきます。節目の世紀ではアプリ内レビューや広告が表示されることがあります。\n\n【アーティファクトの収集】\n・右下の★ボタン：短い動画広告を視聴することで、滞在中の年代にまつわる未獲得のアーティファクト（技術・偉人・歴史的出来事）を1つ獲得できます。（約4時間に1回）\n・1日に6,000歩以上と10,000歩以上歩行して、その日のうちにアプリを開いた際もアーティファクトを獲得できます。';
 
   @override
-  String get hintHistoryTitle => 'History図鑑の見方';
+  String get hintHistoryTitle => '歴史画面の見方';
 
   @override
   String get hintHistoryDesc =>
-      '【コレクションの構造】\n旅の途中で到達した「年代」と、獲得した「アーティファクト」が世紀（Century）ごとにまとめられて記録されています。\n\n【詳細の確認】\n・各世紀のパネルをタップするとアコーディオンが開閉し、一覧が表示されます。\n・アイテムをタップすると、到達日・獲得日、高解像度の画像、および詳細な背景ストーリーを確認できます。\n\n【歴史の殿堂との違い】\n・当タブ「歴史」：現在の周回（ゲームモード）で解放したアイテムが表示されます。\n・サイドメニューの「歴史の殿堂」：これまでのすべての周回を通じて獲得した全アイテムを横断して確認できる完全図鑑です。';
+      '【年代とアーティファクト】\n旅の途中で到達した「年代」と、獲得した「アーティファクト」が世紀ごとにまとめられて記録されています。\n\n【詳細の確認】\n・各世紀のパネルをタップすると一覧で表示されます。\n・各アイテムをタップすると、詳細が表示されます。\n\n【歴史の殿堂との違い】\n・このアプリは周回が可能です。この歴史画面では現在の周回で解放した「年代」と「アーティファクト」のみが表示されます。\n・サイドメニューの「歴史の殿堂」ではこれまでのすべての周回を通じて獲得した全ての「年代」と「アーティファクト」が表示されます。';
 
   @override
   String get tabSteps => '歩数';
@@ -79,9 +71,6 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get homeDefaultDescription =>
       '紀元前750年頃、地中海地域ではフェニキア人による海上貿易が活発化し、イタリア半島では古代ローマの萌芽となるエトルリア文化が発展し始めた。ギリシャでは都市国家ポリスの形成が進む黎明期であった。';
-
-  @override
-  String get historyEmptyCurrentRound => 'この周回で獲得した歴史はまだありません';
 
   @override
   String historyCenturyBce(int century) {
@@ -132,16 +121,11 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get hintStepsTitle => '歩数データと特典';
+  String get hintStepsTitle => '歩数画面の見方';
 
   @override
   String get hintStepsDesc =>
-      '【歩数計測の仕様】\n端末のヘルスケア機能（iOS HealthKit / Android Activity Recognition）と連携し、本日および過去の歩数をリアルタイムに取得・記録しています。\n\n【歩数概要と推移】\n・「本日の歩数」および初回登録からの「累計歩数」が上部に表示されます。\n・下部の棒グラフでは過去7日間の推移を確認でき、各バーをタップすると日別の歩数詳細がポップアップします。\n\n【歩数マイルストーン報酬】\n・6,000歩達成：日々のウォーキング目標到達として、確定アーティファクトを1個獲得できます。\n・10,000歩達成：1万日（約27年分）の歴史を駆け抜けた証として、さらにもう1個の確定アーティファクトを獲得できます。\n※一度に10,000歩を超えて同期された場合でも、6,000歩報酬→10,000歩報酬の順に連続して獲得できます。';
-
-  @override
-  String historyReachedEra(Object eraLabel) {
-    return '$eraLabel年代に到達しました';
-  }
+      '【歩数】\n端末のヘルスケアアプリと連携し、本日および過去7日間の歩数をリアルタイムに取得・記録します。\n\n【歩数概要と推移】\n・「本日の歩数」および開始日時からの「累計歩数」が上部に表示されます。\n・下部の棒グラフでは過去7日間の推移を確認でき、各バーをタップするとその歩数がポップアップします。\n\n【歩数報酬】\n・6,000歩達成・10,000歩達成：それぞれでその世紀のアーティファクトを1個獲得できます。';
 
   @override
   String dateBceFormat(int year, int month, int day) {
@@ -174,21 +158,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String menuStartPoint(String era, int year) {
-    return '開始地点: $era$year年';
-  }
-
-  @override
   String get menuNotLoggedIn => '未ログイン';
-
-  @override
-  String get menuTodaySteps => '本日の歩数';
-
-  @override
-  String get menuTotalSteps => '累計歩数';
-
-  @override
-  String get menuAllConquered => '全歴史制覇！ (総歩数)';
 
   @override
   String get menuThemeSection => 'テーマ';
@@ -207,11 +177,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String artifactDialogDesc(String eraLabel) {
-    return '短い動画を見て現在の年代（$eraLabel）のアーティファクト（技術・偉人・歴史的出来事）を獲得しますか？';
+    return '短い動画を見て現在の世紀（$eraLabel）のアーティファクト（技術・偉人・歴史的出来事）を獲得しますか？';
   }
 
   @override
-  String get artifactDialogNotice => '※ この時代の未獲得アーティファクトから均等な確率で選ばれます。';
+  String get artifactDialogNotice => '※ この世紀の未獲得アーティファクトから均等な確率で選ばれます。';
 
   @override
   String get artifactDialogCancel => 'キャンセル';
@@ -224,10 +194,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get welcomeHydrationNotice =>
-      '人類の長い歴史の旅には、常にこまめな水分補給が不可欠でした。\n屋外でウォーキングを楽しむ際は、しっかりと水分を補給し、安全に気をつけて旅をお楽しみください。';
+      '屋外でウォーキングを楽しむ際は、しっかりと水分を補給し、安全に気をつけて旅をお楽しみください。\n歩きながらのアプリ閲覧はお控えください。';
 
   @override
-  String get welcomeBackgroundTitle => '自動バックグラウンド連携';
+  String get welcomeBackgroundTitle => 'バックグラウンド連携';
 
   @override
   String get welcomeBackgroundNotice =>
@@ -253,13 +223,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get notification6kTitle => '👟 6,000歩達成！';
 
   @override
-  String get notification6kBody => '本日の目標6,000歩を達成しました！歴史の旅が着実に進んでいます。';
+  String get notification6kBody => '本日6,000歩に達成しました！アプリを確認してみましょう！';
 
   @override
-  String get notification10kTitle => '🎉 10,000歩大達成！';
+  String get notification10kTitle => '🎉 10,000歩達成！';
 
   @override
-  String get notification10kBody => '素晴らしい！10,000歩に到達しました！1万日分の歴史を駆け抜けました！';
+  String get notification10kBody => '10,000歩に到達しました！アプリを確認してみましょう！';
 
   @override
   String get milestone6kTitle => '👟 6,000歩達成！';

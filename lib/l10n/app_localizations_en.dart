@@ -16,21 +16,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'Embark on a journey of human history from \'1,000,000 days ago\' to today, counting 1 step as 1 day!';
+      'Every real-world step counts as 1 day in the app! Embark on a journey through human history from 1,000,000 days ago to today!';
 
   @override
   String get onboardingTitle2 => 'Collect Artifacts';
 
   @override
   String get onboardingDesc2 =>
-      'Discover and collect artifacts associated with stories from around the world throughout the centuries.';
+      '1,000,000 steps—1,000,000 days—span across many centuries. Collect artifacts from each era you visit along the way.';
 
   @override
   String get onboardingTitle3 => 'Start Your Odyssey';
 
   @override
   String get onboardingDesc3 =>
-      'Lace up your shoes and step into a timeless journey. Log in or sign up to begin!';
+      'Once you start, all you have to do is walk. Check the app from time to time to see which era you\'ve reached! Log in or sign up to begin.';
 
   @override
   String get btnNext => 'Next';
@@ -48,16 +48,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabHistory => 'History';
 
   @override
-  String historyReached(String name) {
-    return 'Reached $name.';
-  }
-
-  @override
-  String artifactDiscovered(String name) {
-    return 'Discovered $name.';
-  }
-
-  @override
   String figureMet(String name) {
     return 'Met $name.';
   }
@@ -67,14 +57,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintHomeDesc =>
-      '[Steps & Timeline Progression]\nYour steps advance human history from antiquity (700s BCE) toward the modern era at the rate of 1 step = approx. 1 day. Steps sync automatically in the background even when closed.\n\n[Eras & Scenery]\n• Tap the top date button to read in-depth historical context and image titles for your current era.\n• As you accumulate steps, you will advance to new eras, automatically updating the background scenery.\n• Crossing a 100-year century mark triggers a special celebration, offering store reviews on milestone centuries and interstitial ads on others.\n\n[Collecting Artifacts]\n• Bottom-Right ★ Button: After a 4-hour cooldown, watch a short video to discover an uncollected artifact from your current era.\n• Daily Step Milestones: Reaching 6,000 and 10,000 steps each day also guarantees an artifact reward.';
+      '[Steps & Timeline Progression]\nWith every step counting as 1 day in the app, your journey advances from ancient times—1,000,000 days before the date you started the app—toward the modern era.\nSteps sync automatically in the background even when the app is closed.\n\n[Eras & Scenery]\n• Tap the top date button to read in-depth historical context and image titles for your current era.\n• Every 10 years, you reach a new era and the background scenery automatically updates.\n• Centuries advance every 100 years. At milestone centuries, an in-app review prompt or an ad may appear.\n\n[Collecting Artifacts]\n• Bottom-Right ★ Button: Watch a short video ad to discover an uncollected artifact (technology, historical figure, or event) from your current era (available roughly once every 4 hours).\n• Daily Step Milestones: You also earn an artifact when you walk 6,000+ and 10,000+ steps in a day and open the app on that same day.';
 
   @override
-  String get hintHistoryTitle => 'How to View History Collection';
+  String get hintHistoryTitle => 'How to View History';
 
   @override
   String get hintHistoryDesc =>
-      '[Collection Layout]\nAll unlocked eras and discovered artifacts from your odyssey are neatly cataloged century by century.\n\n[Item Details]\n• Tap any century header to expand or collapse the item cards.\n• Tap an item to open a detailed modal showing discovery dates, full images, and rich historical stories.\n\n[History vs. Hall of Fame]\n• This History tab displays items collected during your current journey (round).\n• The Hall of Fame in the side menu provides an encyclopedia of all discoveries made across every journey.';
+      '[Eras & Artifacts]\nThe \"Eras\" you have reached and the \"Artifacts\" you have discovered during your journey are organized and recorded century by century.\n\n[Viewing Details]\n• Tap each century panel to expand and view the list of items.\n• Tap any item to view its details.\n\n[Difference from Hall of Fame]\n• This app supports multiple playthroughs (rounds). This History screen displays only the \"Eras\" and \"Artifacts\" unlocked in your current round.\n• The \"Hall of Fame\" in the side menu displays all \"Eras\" and \"Artifacts\" collected across all your rounds so far.';
 
   @override
   String get tabSteps => 'Steps';
@@ -82,10 +72,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get homeDefaultDescription =>
       'Around 750 BCE, maritime trade by Phoenicians flourished in the Mediterranean, while Etruscan culture began developing in the Italian Peninsula.';
-
-  @override
-  String get historyEmptyCurrentRound =>
-      'No history unlocked in this round yet.';
 
   @override
   String historyCenturyBce(int century) {
@@ -136,16 +122,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get hintStepsTitle => 'Step Data & Milestones';
+  String get hintStepsTitle => 'How to View Steps';
 
   @override
   String get hintStepsDesc =>
-      '[Tracking Mechanism]\nConnected directly to device health sensors (iOS HealthKit / Android Activity Recognition) to track your daily and overall activity.\n\n[Step Metrics & Charts]\n• View your Today\'s Steps alongside your overall Total Steps from day one.\n• The interactive bar chart illustrates your activity over the past 7 days—tap any bar to inspect specific daily counts.\n\n[Milestone Rewards]\n• 6,000 Steps: Hitting this daily fitness goal awards one guaranteed artifact.\n• 10,000 Steps: Advancing nearly 27 years of history in a single day awards a second guaranteed artifact.\n* Even if synced in batches above 10,000 steps, rewards for 6,000 and 10,000 steps are processed sequentially.';
-
-  @override
-  String historyReachedEra(Object eraLabel) {
-    return 'Reached the ${eraLabel}s';
-  }
+      '[Step Tracking]\nConnects with your device\'s health app to retrieve and record your step counts for today and the past 7 days in real time.\n\n[Step Summary & Trends]\n• \"Today\'s Steps\" and \"Total Steps\" since your start date are displayed at the top.\n• The bar chart below shows your progress over the past 7 days—tap any bar to view the exact step count in a pop-up.\n\n[Step Rewards]\n• Reaching 6,000 & 10,000 Steps: You earn 1 artifact from your current century for each milestone achieved.';
 
   @override
   String dateBceFormat(int year, int month, int day) {
@@ -178,21 +159,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String menuStartPoint(String era, int year) {
-    return 'Start Era: $era$year';
-  }
-
-  @override
   String get menuNotLoggedIn => 'Not logged in';
-
-  @override
-  String get menuTodaySteps => 'Today\'s Steps';
-
-  @override
-  String get menuTotalSteps => 'Total Steps';
-
-  @override
-  String get menuAllConquered => 'All History Conquered! (Total Steps)';
 
   @override
   String get menuThemeSection => 'Theme';
@@ -211,12 +178,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String artifactDialogDesc(String eraLabel) {
-    return 'Would you like to watch a short video to discover an artifact (technology, figure, or historical event) from the current era ($eraLabel)?';
+    return 'Would you like to watch a short video to discover an artifact (technology, figure, or historical event) from the current century ($eraLabel)?';
   }
 
   @override
   String get artifactDialogNotice =>
-      '* Selected at random with equal probability from uncollected artifacts of this era.';
+      '* Selected at random with equal probability from uncollected artifacts of this century.';
 
   @override
   String get artifactDialogCancel => 'Cancel';
@@ -229,10 +196,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeHydrationNotice =>
-      'Throughout the long journey of human history, proper hydration has always been essential.\nPlease stay hydrated and keep safe while walking outdoors.';
+      'When walking outdoors, please stay well hydrated and keep safe on your journey.\nPlease refrain from looking at the app while walking.';
 
   @override
-  String get welcomeBackgroundTitle => 'Automatic Background Sync';
+  String get welcomeBackgroundTitle => 'Background Sync';
 
   @override
   String get welcomeBackgroundNotice =>
@@ -259,14 +226,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notification6kBody =>
-      'You\'ve reached your daily goal of 6,000 steps! Your journey through history progresses steadily.';
+      'You reached 6,000 steps today! Open the app to check your progress!';
 
   @override
-  String get notification10kTitle => '🎉 10,000 Steps Milestone!';
+  String get notification10kTitle => '🎉 10,000 Steps Reached!';
 
   @override
   String get notification10kBody =>
-      'Amazing! You hit 10,000 steps today, advancing nearly 27 years through human history!';
+      'You reached 10,000 steps today! Open the app to check your progress!';
 
   @override
   String get milestone6kTitle => '👟 6,000 Steps Milestone!';
