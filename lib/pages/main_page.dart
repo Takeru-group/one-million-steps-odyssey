@@ -375,8 +375,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       stepsPerDay: 1,
     );
 
-    final rawKey = UserRepository.calculateEraKey(currentDate.era, currentDate.year);
-    return UserRepository.buildEraStorageKey(rawKey, user.gameMode);
+    return UserRepository.calculateEraKey(currentDate.era, currentDate.year);
   }
 
   /// 🌟 年代更新 ＆ 世紀（Century）跨ぎイベントの統括処理
@@ -551,17 +550,32 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     }
   }
 
-  void _onWatchAdTriggered(AppLocalizations l10n) {
-    final currentLocale = Localizations.localeOf(context).languageCode;
-    final eraMap = _detailedData?.user.unlockedEras[_currentEraKey];
+  Future<void> _onWatchAdTriggered(AppLocalizations l10n) async {
+    if (_detailedData == null) return;
 
-    String eraLabel = '';
-    if (eraMap != null) {
-      final labelJp = eraMap['yearLabelJp'] as String? ?? eraMap['eraLabel'] as String? ?? '';
-      final labelEn = eraMap['yearLabelEn'] as String? ?? eraMap['eraLabel'] as String? ?? '';
-      eraLabel = currentLocale == 'en' ? (labelEn.isNotEmpty ? labelEn : labelJp) : labelJp;
+    // 広告視聴確認の前に、現在の世紀に未獲得のアーティファクトが残っているか事前チェック
+    final hasRemaining = await _userRepository.hasUncollectedArtifactsForCurrentCentury(
+      currentDetails: _detailedData!,
+    );
+    if (!mounted) return;
+
+    if (!hasRemaining) {
+      await AppDialogs.showAllArtifactsCollectedDialog(context);
+      return;
     }
 
+    final currentLocale = Localizations.localeOf(context).languageCode;
+    final eraMap = _detailedData?.user.unlockedEras[_currentEraKey];
+    String eraLabel = '';
+    if (eraMap != null) {
+      final century = (eraMap['century'] as num?)?.toInt() ?? 1;
+      final absC = century.abs();
+      if (century < 0) {
+        eraLabel = l10n.historyCenturyBce(absC);
+      } else {
+        eraLabel = currentLocale == 'ja' ? '西暦$absC世紀' : l10n.historyCenturyCe(absC);
+      }
+    }
     AppDialogs.showArtifactConfirmationDialog(
       context: context,
       l10n: l10n,
@@ -571,10 +585,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           onUserEarnedReward: () {
             _handleArtifactDiscovery(fromAd: true);
           },
-          onAdFailed: (reason) {
+          onAdFailed: (_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(reason),
+                content: Text(l10n.adNotReady),
                 backgroundColor: Colors.redAccent,
               ),
             );

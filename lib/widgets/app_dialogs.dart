@@ -395,6 +395,82 @@ class AppDialogs {
     );
   }
 
+  /// 🏛 現在の世紀のアーティファクトをすべて獲得済みの場合の案内ダイアログ
+  static Future<void> showAllArtifactsCollectedDialog(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final dialogBgColor = isDarkMode
+        ? Colors.black.withValues(alpha: 0.80)
+        : Colors.white.withValues(alpha: 0.90);
+    final borderColor = isDarkMode
+        ? Colors.white.withValues(alpha: 0.20)
+        : Colors.white.withValues(alpha: 0.50);
+    final textColor = isDarkMode ? Colors.white : Colors.black87;
+
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+          child: AlertDialog(
+            backgroundColor: dialogBgColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+              side: BorderSide(color: borderColor),
+            ),
+            title: Row(
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  color: isDarkMode ? Colors.amberAccent : Colors.deepPurple,
+                  size: 26,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.artifactDialogTitle,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            content: Text(
+              l10n.artifactAllCollected,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text(
+                    l10n.btnClose,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   /// 🧭 新年代到達（＋世紀突入）ダイアログ
   static Future<void> showEraUnlockedDialog({
     required BuildContext context,

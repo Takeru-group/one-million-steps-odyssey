@@ -167,7 +167,7 @@ class UserRepository {
       }
 
       unlockedHistories[key] = HistoryMasterModel(
-        id: extractMasterEraId(key),
+        id: key,
         backgroundImagePath: map['backgroundImagePath'] as String? ?? '',
         descriptionEn: map['descriptionEn'] as String? ?? '',
         descriptionJp: map['descriptionJp'] as String? ?? '',
@@ -259,7 +259,7 @@ class UserRepository {
 
     for (final eraKey in missingEraKeys.keys) {
       try {
-        final master = await _masterDataRepository.getHistoryMaster(extractMasterEraId(eraKey));
+        final master = await _masterDataRepository.getHistoryMaster(eraKey);
         if (master != null) {
           final existingMap = missingEraKeys[eraKey] ?? {};
           existingMap['yearLabelJp'] = master.yearLabelJp;
@@ -313,7 +313,7 @@ class UserRepository {
     required String eraKey,
   }) async {
     try {
-      final master = await _masterDataRepository.getHistoryMaster(extractMasterEraId(eraKey));
+      final master = await _masterDataRepository.getHistoryMaster(eraKey);
       if (master == null) return null;
 
       final cacheKey = '$userId:$eraKey';
@@ -347,7 +347,7 @@ class UserRepository {
     final docRef = _firestore.collection('user').doc(userId);
     final now = DateTime.now().toUtc();
 
-    final master = await _masterDataRepository.getHistoryMaster(extractMasterEraId(newEraKey));
+    final master = await _masterDataRepository.getHistoryMaster(newEraKey);
 
     final newScheduledDeletionAt = DateTime(
       now.year + 1,
@@ -403,8 +403,7 @@ class UserRepository {
       stepsPerDay: 1,
     );
     final targetCentury = currentDate.century;
-
-    QuerySnapshot<Map<String, dynamic>> snapshot;
+    QuerySnapshot> snapshot;
     try {
       snapshot = await _firestore
           .collection('artifacts')
@@ -417,20 +416,18 @@ class UserRepository {
           .where('century', isEqualTo: targetCentury)
           .get(const GetOptions(source: Source.cache));
     }
-
     if (snapshot.docs.isEmpty) return null;
 
-    final unlockedIds = currentDetails.user.unlockedArtifacts.keys.toSet();
+    final currentGameMode = user.gameMode;
+    final unlockedIdsInMode = _getUnlockedArtifactIdsInGameMode(user, currentGameMode);
     final uncollectedDocs = snapshot.docs.where((doc) {
-      return !unlockedIds.contains(doc.id);
+      return !unlockedIdsInMode.contains(doc.id);
     }).toList();
-
     if (uncollectedDocs.isEmpty) return null;
 
     final random = Random();
     final selectedDoc = uncollectedDocs[random.nextInt(uncollectedDocs.length)];
     final artifactId = selectedDoc.id;
-
     final artifactMaster = await _masterDataRepository.getArtifact(artifactId);
     if (artifactMaster == null) return null;
 
@@ -438,7 +435,7 @@ class UserRepository {
     final artifactData = {
       'unlockedAt': Timestamp.fromDate(now),
       'eraKey': currentEraKey,
-      'gameMode': currentDetails.user.gameMode,
+      'gameMode': currentGameMode,
       'nameJa': artifactMaster.nameJa,
       'nameEn': artifactMaster.nameEn,
       'descJa': artifactMaster.descJa,
@@ -449,7 +446,6 @@ class UserRepository {
       'thumbnailPath': artifactMaster.thumbnailPath,
       'rarity': artifactMaster.rarity,
     };
-
     final newScheduledDeletionAt = DateTime(
       now.year + 1,
       now.month,
@@ -462,18 +458,58 @@ class UserRepository {
       'unlockedArtifacts.$artifactId': artifactData,
       'scheduledDeletionAt': Timestamp.fromDate(newScheduledDeletionAt),
     };
-
     if (isFromAd) {
       updates['lastArtifactUnlockedAt'] = Timestamp.fromDate(now);
     }
-
     try {
       await _firestore.collection('user').doc(userId).update(updates).timeout(const Duration(seconds: 3));
     } catch (_) {}
-
     return artifactMaster;
   }
 
+  /// 現在のゲームモード内で獲得済みのアーティファクトID集合を取得
+  Set<String> _getUnlockedArtifactIdsInGameMode(UserModel user, int gameMode) {
+    final ids = <String>{};
+    user.unlockedArtifacts.forEach((artifactId, data) {
+      final itemGameMode = (data['gameMode'] as num?)?.toInt() ?? 0;
+      if (itemGameMode == gameMode) {
+        ids.add(artifactId);
+      }
+    });
+    return ids;
+  }
+
+  /// 🌟 広告視聴前チェック：現在の世紀に未獲得のアーティファクト（同ゲームモード内）が残っているか判定
+  Future<bool> hasUncollectedArtifactsForCurrentCentury({
+    required UserDetailedData currentDetails,
+  }) async {
+    final user = currentDetails.user;
+    final currentDate = TimelineCalculator.addStepsToDate(
+      era: user.startEra,
+      year: user.startYear,
+      month: user.startMonth,
+      day: user.startDay,
+      steps: user.totalSteps,
+      stepsPerDay: 1,
+    );
+    final targetCentury = currentDate.century;
+    QuerySnapshot> snapshot;
+    try {
+      snapshot = await _firestore
+          .collection('artifacts')
+          .where('century', isEqualTo: targetCentury)
+          .get()
+          .timeout(const Duration(seconds: 3));
+    } catch (_) {
+      snapshot = await _firestore
+          .collection('artifacts')
+          .where('century', isEqualTo: targetCentury)
+          .get(const GetOptions(source: Source.cache));
+    }
+    if (snapshot.docs.isEmpty) return false;
+    final unlockedIdsInMode = _getUnlockedArtifactIdsInGameMode(user, user.gameMode);
+    return snapshot.docs.any((doc) => !unlockedIdsInMode.contains(doc.id));
+  }
 
   /// 🌟 100万歩達成後、次の周回（New Round）を開始する
   Future<UserDetailedData> startNewRound({
@@ -493,9 +529,8 @@ class UserRepository {
       now.second,
     );
 
-    final rawEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
-    final initialEraKey = buildEraStorageKey(rawEraKey, nextGameMode);
-    final initialMaster = await _masterDataRepository.getHistoryMaster(rawEraKey);
+    final initialEraKey = calculateEraKey(startAppDate.era, startAppDate.year);
+    final initialMaster = await _masterDataRepository.getHistoryMaster(initialEraKey);
 
     final eraData = {
       'unlockedAt': Timestamp.fromDate(now),
@@ -533,18 +568,6 @@ class UserRepository {
     }
 
     return await getUserWithDetails(userId);
-  }
-
-  /// 周回（gameMode）ごとの保存用キーを生成（0周目は互換性のためプレフィックスなし）
-  static String buildEraStorageKey(String rawEraKey, int gameMode) {
-    final cleanKey = extractMasterEraId(rawEraKey);
-    return gameMode == 0 ? cleanKey : '${gameMode}_$cleanKey';
-  }
-
-  /// 保存用キー（例: "1_bc_0710" や "bc_0710"）からマスターID（"bc_0710"）を抽出
-  static String extractMasterEraId(String storageKey) {
-    final match = RegExp(r'^\d+_((?:bc|ad)_\d+)$').firstMatch(storageKey);
-    return match != null ? match.group(1)! : storageKey;
   }
 
   static String calculateEraKey(String era, int year) {
