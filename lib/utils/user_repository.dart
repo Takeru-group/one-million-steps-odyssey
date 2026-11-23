@@ -403,7 +403,7 @@ class UserRepository {
       stepsPerDay: 1,
     );
     final targetCentury = currentDate.century;
-    QuerySnapshot> snapshot;
+    QuerySnapshot<Map<String, dynamic>> snapshot;
     try {
       snapshot = await _firestore
           .collection('artifacts')
@@ -493,7 +493,7 @@ class UserRepository {
       stepsPerDay: 1,
     );
     final targetCentury = currentDate.century;
-    QuerySnapshot> snapshot;
+    QuerySnapshot<Map<String, dynamic>> snapshot;
     try {
       snapshot = await _firestore
           .collection('artifacts')
